@@ -1,10 +1,5 @@
-fastapi
-uvicorn[standard]
-groq
-python-multipart
-pydantic
-requests
-sqlalchemy
-aiosqlite
-python-jose[cryptography]
-passlib[bcrypt]
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+huggingface-hub==0.23.0
+python-multipart==0.0.9
+pydantic==2.7.0

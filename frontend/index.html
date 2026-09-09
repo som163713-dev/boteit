@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>دستیار هوشمند</title>
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="home-screen" class="screen active">
+        <div class="home-header">
+            <div class="logo">🤖</div>
+            <h1>دستیار هوشمند</h1>
+            <p>حوزه مورد نظر را انتخاب کنید</p>
+        </div>
+        <div class="categories-grid">
+            <div class="cat-card" onclick="selectCategory('shopping','🛍️ فروشگاه')"><span class="cat-emoji">🛍️</span><span class="cat-name">فروشگاه</span></div>
+            <div class="cat-card" onclick="selectCategory('clinic','🏥 کلینیک')"><span class="cat-emoji">🏥</span><span class="cat-name">کلینیک</span></div>
+            <div class="cat-card" onclick="selectCategory('realestate','🏠 املاک')"><span class="cat-emoji">🏠</span><span class="cat-name">املاک</span></div>
+            <div class="cat-card" onclick="selectCategory('education','📚 آموزش')"><span class="cat-emoji">📚</span><span class="cat-name">آموزش</span></div>
+            <div class="cat-card" onclick="selectCategory('restaurant','🍕 رستوران')"><span class="cat-emoji">🍕</span><span class="cat-name">رستوران</span></div>
+            <div class="cat-card" onclick="selectCategory('legal','⚖️ حقوقی')"><span class="cat-emoji">⚖️</span><span class="cat-name">حقوقی</span></div>
+            <div class="cat-card" onclick="selectCategory('finance','💰 مالی')"><span class="cat-emoji">💰</span><span class="cat-name">مالی</span></div>
+            <div class="cat-card" onclick="selectCategory('support','🔧 پشتیبانی')"><span class="cat-emoji">🔧</span><span class="cat-name">پشتیبانی</span></div>
+            <div class="cat-card wide" onclick="selectCategory('general','🤖 دستیار عمومی')"><span class="cat-emoji">🤖</span><span class="cat-name">دستیار عمومی</span></div>
+        </div>
+    </div>
+
+    <div id="chat-screen" class="screen">
+        <div class="chat-header">
+            <button class="icon-btn" onclick="goHome()" title="برگشت">‹</button>
+            <span id="chat-title">چت</span>
+            <button class="icon-btn" onclick="clearChat()" title="پاک کردن">🗑</button>
+        </div>
+        <div id="messages" class="messages-box">
+            <div class="welcome-bubble" id="welcome-bubble">سلام! چطور میتونم کمکت کنم؟ 😊</div>
+        </div>
+        <div class="input-bar">
+            <input id="user-input" type="text" placeholder="پیام بنویس..." autocomplete="off" onkeydown="onEnter(event)" />
+            <button id="send-btn" onclick="sendMessage()">↑</button>
+        </div>
+    </div>
+    <script src="/static/app.js"></script>
+</body>
+</html>

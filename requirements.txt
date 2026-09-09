@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+groq
+python-multipart
+pydantic
+requests
+sqlalchemy
+aiosqlite
+python-jose[cryptography]
+passlib[bcrypt]

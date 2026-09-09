@@ -1,20 +1,17 @@
 import os
-from groq import Groq
+from openai import OpenAI
 
-APP_VERSION = "2.0.0"
-APP_NAME    = "Eitaa AI Miniapp"
-MAX_HISTORY = 10
-AI_MODEL    = "llama-3.3-70b-versatile"
-MAX_TOKENS  = 1000
+APP_VERSION = "1.0.0"
+APP_NAME = "Eitaa AI Miniapp"
+
+# مدل رایگان Hugging Face
+AI_MODEL = "HuggingFaceH4/zephyr-7b-beta"  # یا "mistralai/Mistral-7B-Instruct-v0.2"
+MAX_TOKENS = 1000
 TEMPERATURE = 0.7
+MAX_HISTORY = 10
 
-_client = None
-
-def get_client():
-    global _client
-    if _client is None:
-        api_key = os.getenv("GROQ_API_KEY")
-        if not api_key:
-            raise ValueError("❌ GROQ_API_KEY تنظیم نشده!")
-        _client = Groq(api_key=api_key)
-    return _client
+# اتصال به Hugging Face Inference API
+client = OpenAI(
+    api_key=os.getenv("HF_API_KEY"), 
+    base_url="https://api-inference.huggingface.co/v1"
+)

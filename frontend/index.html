@@ -36,19 +36,23 @@
 
         <div class="nav-center">
             <div class="top-tools">
-                <button class="t-tool c-gallery" title="گالری" onclick="toast('گالری — به‌زودی')">
+                <button class="t-tool" title="گفتگوی جدید" onclick="goHome()">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+                </button>
+                <span class="tools-divider"></span>
+                <button class="t-tool" title="گالری" onclick="toast('گالری — به‌زودی')">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h6v6H4zM14 6h6v4h-6zM14 14h6v4h-6zM4 16h6v2H4z"/></svg>
                 </button>
-                <button class="t-tool c-video" title="ویدیو" onclick="toast('ساخت ویدیو — به‌زودی')">
+                <button class="t-tool" title="ویدیو" onclick="toast('ساخت ویدیو — به‌زودی')">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2V10z"/></svg>
                 </button>
-                <button class="t-tool c-image" title="تصویر" onclick="toast('ساخت عکس — به‌زودی')">
+                <button class="t-tool" title="تصویر" onclick="toast('ساخت عکس — به‌زودی')">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 16l5-4 4 3 4-5 5 6"/></svg>
                 </button>
-                <button class="t-tool c-music" title="موزیک" onclick="toast('ساخت موزیک — به‌زودی')">
+                <button class="t-tool" title="موزیک" onclick="toast('ساخت موزیک — به‌زودی')">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                 </button>
-                <button class="t-tool c-assist" title="دستیارها" onclick="toggleAssistMenu()">
+                <button class="t-tool" title="دستیارها" onclick="toggleAssistMenu()">
                     <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="7" width="14" height="12" rx="3"/><circle cx="9" cy="12" r="1.3" fill="currentColor"/><circle cx="15" cy="12" r="1.3" fill="currentColor"/><path d="M9 16h6"/></svg>
                 </button>
                 <span class="tools-divider"></span>
@@ -58,9 +62,6 @@
                     <span class="chev">▾</span>
                 </button>
             </div>
-            <button class="new-chat-btn" title="گفتگوی جدید" onclick="goHome()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
-            </button>
         </div>
 
         <div class="nav-left">
@@ -95,6 +96,7 @@
         <div class="composer">
             <textarea id="user-input" rows="1" placeholder="هرچی می‌خوای بپرس!" onkeydown="onEnter(event)" oninput="autoGrow(this)"></textarea>
             <div class="composer-bottom">
+                <div class="composer-hint">هوش مصنوعی ممکن است اشتباه کند</div>
                 <div class="composer-actions">
                     <button class="c-btn send" id="send-btn" onclick="sendMessage()">↑</button>
                     <button class="c-btn" onclick="toast('پیوست — به‌زودی')">📎</button>
@@ -105,7 +107,6 @@
                         <span class="toggle-label">تفکر عمیق</span>
                     </label>
                 </div>
-                <div class="composer-hint">هوش مصنوعی ممکن است اشتباه کند</div>
             </div>
         </div>
     </div>

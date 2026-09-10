@@ -8,13 +8,12 @@ window.addEventListener('load', () => {
     try {
         const WA = window.Eitaa?.WebApp;
         if (!WA) return;
-        WA.ready();
-        WA.expand();
+        WA.ready(); WA.expand();
         WA.setHeaderColor('#FF6A3D');
         WA.setBackgroundColor('#FBF6F1');
         if (WA.disableVerticalSwipes) WA.disableVerticalSwipes();
         WA.BackButton.onClick(goHome);
-    } catch (e) {}
+    } catch(e) {}
 });
 
 const WELCOME = {
@@ -37,22 +36,12 @@ function toast(msg) {
     toast._t = setTimeout(() => el.classList.add('hidden'), 2200);
 }
 
-function openPanel() {
-    document.getElementById('side-panel').classList.add('open');
-    document.getElementById('backdrop').classList.remove('hidden');
-}
-
-function closePanel() {
-    document.getElementById('side-panel').classList.remove('open');
-    document.getElementById('backdrop').classList.add('hidden');
-}
-
+// ── Rail جمع/باز ──────────────────────────
 function toggleRail() {
-    const collapsed = document.body.classList.toggle('rail-collapsed');
-    const openBtn = document.getElementById('rail-open-btn');
-    if (openBtn) openBtn.classList.toggle('hidden', !collapsed);
+    document.getElementById('rail').classList.toggle('expanded');
 }
 
+// ── Navigation ────────────────────────────
 function toggleModels() {
     document.getElementById('model-menu').classList.toggle('hidden');
 }
@@ -78,8 +67,9 @@ function goHome() {
     document.getElementById('messages').innerHTML = '';
     document.getElementById('messages').classList.add('hidden');
     document.getElementById('empty-state').classList.remove('hidden');
-    closePanel();
-    try { window.Eitaa?.WebApp?.BackButton?.hide(); } catch (e) {}
+    document.querySelectorAll('.rail-item').forEach(b => b.classList.remove('active'));
+    document.getElementById('rail-home').classList.add('active');
+    try { window.Eitaa?.WebApp?.BackButton?.hide(); } catch(e) {}
 }
 
 function selectCategory(cat, title) {
@@ -93,8 +83,7 @@ function selectCategory(cat, title) {
         if (label) label.textContent = title;
     }
     haptic('light');
-    closePanel();
-    try { window.Eitaa?.WebApp?.BackButton?.show(); } catch (e) {}
+    try { window.Eitaa?.WebApp?.BackButton?.show(); } catch(e) {}
     setTimeout(() => document.getElementById('user-input').focus(), 200);
 }
 
@@ -175,16 +164,16 @@ async function sendMessage() {
             buffer = lines.pop();
             for (const line of lines) {
                 if (!line.startsWith('data:')) continue;
-                try { handleData(JSON.parse(line.slice(5).trim())); } catch (_) {}
+                try { handleData(JSON.parse(line.slice(5).trim())); } catch(_) {}
             }
         }
         buffer += decoder.decode();
         if (buffer.startsWith('data:')) {
-            try { handleData(JSON.parse(buffer.slice(5).trim())); } catch (_) {}
+            try { handleData(JSON.parse(buffer.slice(5).trim())); } catch(_) {}
         }
         saveHistory();
         if (!fullText && streamBot) streamBot.textContent = 'پاسخی دریافت نشد. دوباره تلاش کن!';
-    } catch (err) {
+    } catch(err) {
         clearTimeout(coldStartTimer);
         removeTyping();
         console.error(err);
@@ -238,7 +227,7 @@ function haptic(type) {
         if (type === 'light')   hf.impactOccurred('light');
         if (type === 'success') hf.notificationOccurred('success');
         if (type === 'error')   hf.notificationOccurred('error');
-    } catch (e) {}
+    } catch(e) {}
 }
 
 document.addEventListener('click', (e) => {

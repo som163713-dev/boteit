@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل مدیریت</title>
+    <link rel="stylesheet" href="/admin-panel/style.css">
+</head>
+<body>
+
+<!-- لاگین -->
+<div id="login-screen" class="screen active">
+    <div class="login-box">
+        <div class="login-logo">🤖</div>
+        <h2>پنل مدیریت</h2>
+        <input id="username" type="text" placeholder="نام کاربری">
+        <input id="password" type="password" placeholder="رمز عبور">
+        <button onclick="login()">ورود</button>
+        <div id="login-error" class="error"></div>
+    </div>
+</div>
+
+<!-- داشبورد -->
+<div id="dashboard-screen" class="screen">
+
+    <!-- سایدبار -->
+    <div class="sidebar">
+        <div class="sidebar-logo">🤖 AI Panel</div>
+        <nav>
+            <button class="nav-btn active" onclick="showTab('overview')">
+                📊 داشبورد
+            </button>
+            <button class="nav-btn" onclick="showTab('customers')">
+                👥 مشتریان
+            </button>
+            <button class="nav-btn" onclick="showTab('payments')">
+                💰 پرداخت‌ها
+            </button>
+            <button class="nav-btn" onclick="showTab('stats')">
+                📈 آمار
+            </button>
+        </nav>
+        <button class="logout-btn" onclick="logout()">خروج</button>
+    </div>
+
+    <!-- محتوا -->
+    <div class="main-content">
+
+        <!-- تب داشبورد -->
+        <div id="tab-overview" class="tab active">
+            <h2>📊 خلاصه وضعیت</h2>
+            <div class="cards-grid">
+                <div class="stat-card blue">
+                    <span class="stat-icon">👥</span>
+                    <span class="stat-value" id="total-customers">-</span>
+                    <span class="stat-label">کل مشتریان</span>
+                </div>
+                <div class="stat-card green">
+                    <span class="stat-icon">✅</span>
+                    <span class="stat-value" id="active-customers">-</span>
+                    <span class="stat-label">مشتریان فعال</span>
+                </div>
+                <div class="stat-card purple">
+                    <span class="stat-icon">💬</span>
+                    <span class="stat-value" id="total-messages">-</span>
+                    <span class="stat-label">کل پیام‌ها</span>
+                </div>
+                <div class="stat-card orange">
+                    <span class="stat-icon">📅</span>
+                    <span class="stat-value" id="today-messages">-</span>
+                    <span class="stat-label">پیام امروز</span>
+                </div>
+                <div class="stat-card gold">
+                    <span class="stat-icon">💰</span>
+                    <span class="stat-value" id="month-revenue">-</span>
+                    <span class="stat-label">درآمد ماه (تومان)</span>
+                </div>
+                <div class="stat-card teal">
+                    <span class="stat-icon">🏦</span>
+                    <span class="stat-value" id="total-revenue">-</span>
+                    <span class="stat-label">کل درآمد (تومان)</span>
+                </div>
+            </div>
+
+            <h3 style="margin:24px 0 12px">🔥 فعال‌ترین مشتریان</h3>
+            <div class="table-wrap">
+                <table id="top-customers-table">
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>کسب‌وکار</th>
+                            <th>تعداد پیام</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تب مشتریان -->
+        <div id="tab-customers" class="tab">
+            <div class="tab-header">
+                <h2>👥 مشتریان</h2>
+                <button class="add-btn" onclick="showAddCustomer()">
+                    ➕ مشتری جدید
+                </button>
+            </div>
+
+            <!-- فرم افزودن -->
+            <div id="add-customer-form" class="form-box hidden">
+                <h3>➕ افزودن مشتری</h3>
+                <div class="form-grid">
+                    <input id="c-name"     type="text"   placeholder="نام مشتری">
+                    <input id="c-business" type="text"   placeholder="نام کسب‌وکار">
+                    <input id="c-phone"    type="text"   placeholder="شماره تلفن">
+                    <select id="c-category">
+                        <option value="shopping">🛍️ فروشگاه</option>
+                        <option value="clinic">🏥 کلینیک</option>
+                        <option value="realestate">🏠 املاک</option>
+                        <option value="education">📚 آموزش</option>
+                        <option value="restaurant">🍕 رستوران</option>
+                        <option value="legal">⚖️ حقوقی</option>
+                        <option value="finance">💰 مالی</option>
+                        <option value="support">🔧 پشتیبانی</option>
+                        <option value="general">🤖 عمومی</option>
+                    </select>
+                    <select id="c-plan">
+                        <option value="basic">پایه - 290,000 تومان</option>
+                        <option value="pro">حرفه‌ای - 690,000 تومان</option>
+                        <option value="enterprise">سازمانی - 1,490,000 تومان</option>
+                    </select>
+                    <input id="c-days" type="number" 
+                           placeholder="تعداد روز" value="30">
+                </div>
+                <div class="form-actions">
+                    <button onclick="addCustomer()">✅ ذخیره</button>
+                    <button class="cancel" 
+                            onclick="hideAddCustomer()">❌ انصراف</button>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table id="customers-table">
+                    <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>کسب‌وکار</th>
+                            <th>تلفن</th>
+                            <th>حوزه</th>
+                            <th>پلن</th>
+                            <th>وضعیت</th>
+                            <th>انقضا</th>
+                            <th>API Key</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- تب آمار -->
+        <div id="tab-stats" class="tab">
+            <h2>📈 آمار تفصیلی</h2>
+            <div class="table-wrap">
+                <h3>حوزه‌های پرمصرف</h3>
+                <table id="categories-table">
+                    <thead>
+                        <tr><th>حوزه</th><th>تعداد پیام</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="/admin-panel/app.js"></script>
+</body>
+</html>

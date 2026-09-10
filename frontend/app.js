@@ -10,8 +10,8 @@ window.addEventListener('load', () => {
         if (!WA) return;
         WA.ready();
         WA.expand();
-        WA.setHeaderColor('#007AFF');
-        WA.setBackgroundColor('#f2f2f7');
+        WA.setHeaderColor('#FF6A3D');
+        WA.setBackgroundColor('#FBF7F3');
         if (WA.disableVerticalSwipes) WA.disableVerticalSwipes();
         WA.BackButton.onClick(goHome);
         WA.onEvent('themeChanged', () => console.log('تم تغییر کرد'));
@@ -30,6 +30,18 @@ const WELCOME = {
     support: 'سلام! 🔧 به پشتیبانی فنی خوش اومدی!\nمشکلت رو توضیح بده!',
     general: 'سلام! 🤖 من دستیار هوشمند توام!\nهر سوالی داری بپرس!'
 };
+
+
+function quickStart(cat, prompt) {
+    selectCategory(cat, document.querySelector(`[onclick*="selectCategory('${cat}'"]`)?.textContent?.trim() || cat);
+    setTimeout(() => {
+        const input = document.getElementById('user-input');
+        if (input) {
+            input.value = prompt;
+            sendMessage();
+        }
+    }, 280);
+}
 
 function selectCategory(cat, title) {
     category = cat;

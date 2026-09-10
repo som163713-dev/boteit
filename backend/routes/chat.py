@@ -64,8 +64,6 @@ async def chat(request: ChatRequest):
 
 @router.post("/chat/stream")
 async def chat_stream(request: ChatRequest):
-    """Server-Sent Events streaming endpoint for the frontend."""
-
     def event_generator():
         try:
             messages = build_messages(request)
@@ -91,7 +89,10 @@ async def chat_stream(request: ChatRequest):
 
         except Exception as e:
             print(f"❌ Stream Error: {str(e)}")
-            err = json.dumps({"content": f"خطا در پردازش: {str(e)}", "done": True}, ensure_ascii=False)
+            err = json.dumps(
+                {"content": f"خطا در پردازش: {str(e)}", "done": True},
+                ensure_ascii=False
+            )
             yield f"data: {err}\n\n"
 
     return StreamingResponse(

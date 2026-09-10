@@ -37,7 +37,9 @@ function toast(msg) {
     toast._t = setTimeout(() => el.classList.add('hidden'), 2200);
 }
 
+/* ══ پنل کناری ══ */
 function openPanel() {
+    closeAvatarMenu();
     document.getElementById('side-panel').classList.add('open');
     document.getElementById('backdrop').classList.remove('hidden');
 }
@@ -45,6 +47,23 @@ function openPanel() {
 function closePanel() {
     document.getElementById('side-panel').classList.remove('open');
     document.getElementById('backdrop').classList.add('hidden');
+}
+
+/* ══ منوی آواتار ══ */
+function toggleAvatarMenu() {
+    const menu = document.getElementById('avatar-menu');
+    if (menu.classList.contains('open')) {
+        closeAvatarMenu();
+    } else {
+        closePanel();
+        menu.classList.add('open');
+        document.getElementById('avatar-backdrop').classList.remove('hidden');
+    }
+}
+
+function closeAvatarMenu() {
+    document.getElementById('avatar-menu').classList.remove('open');
+    document.getElementById('avatar-backdrop').classList.add('hidden');
 }
 
 function toggleRail() {
@@ -79,6 +98,7 @@ function goHome() {
     document.getElementById('messages').classList.add('hidden');
     document.getElementById('empty-state').classList.remove('hidden');
     closePanel();
+    closeAvatarMenu();
     try { window.Eitaa?.WebApp?.BackButton?.hide(); } catch (e) {}
 }
 
@@ -94,6 +114,7 @@ function selectCategory(cat, title) {
     }
     haptic('light');
     closePanel();
+    closeAvatarMenu();
     try { window.Eitaa?.WebApp?.BackButton?.show(); } catch (e) {}
     setTimeout(() => document.getElementById('user-input').focus(), 200);
 }
@@ -247,5 +268,12 @@ document.addEventListener('click', (e) => {
     if (menu && !menu.classList.contains('hidden') &&
         !menu.contains(e.target) && chip && !chip.contains(e.target)) {
         menu.classList.add('hidden');
+    }
+
+    const avMenu = document.getElementById('avatar-menu');
+    const avBtn = document.getElementById('avatar-btn');
+    if (avMenu && avMenu.classList.contains('open') &&
+        !avMenu.contains(e.target) && avBtn && !avBtn.contains(e.target)) {
+        closeAvatarMenu();
     }
 });

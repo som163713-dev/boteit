@@ -3,14 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>آشا</title>
+    <title>آشا — دستیار هوشمند</title>
     <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<div class="page">
+
+<!-- ═══ نوار آیکون راست — جمع‌شونده ═══ -->
+<aside class="right-rail" id="right-rail">
+    <div class="rail-inner">
+        <div class="rail-top">
+            <button class="rail-brand" onclick="goHome()" title="خانه">
+                <div class="rail-logo-mark">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" fill="currentColor"/>
+                        <path d="M12 7.5l-4 2.5v5l4 2.5 4-2.5v-5l-4-2.5z" fill="#fff" opacity=".9"/>
+                    </svg>
+                </div>
+                <span class="rail-brand-text">آشا</span>
+            </button>
+        </div>
+
+        <div class="rail-divider"></div>
+
+        <div class="rail-nav">
+            <button class="rail-ico active" id="rail-chat" onclick="goHome()" title="گفتگو">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M4 6a3 3 0 013-3h10a3 3 0 013 3v8a3 3 0 01-3 3H10l-4 3v-3H7a3 3 0 01-3-3V6z"/>
+                </svg>
+                <span class="rail-label">گفتگو</span>
+            </button>
+
+            <button class="rail-ico" onclick="toast('ساخت ویدیو — به‌زودی')" title="ویدیو">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="5" width="14" height="14" rx="2"/>
+                    <path d="M17 10l4-2v8l-4-2V10z"/>
+                </svg>
+                <span class="rail-label">ویدیو</span>
+            </button>
+
+            <button class="rail-ico" onclick="toast('ساخت عکس — به‌زودی')" title="تصویر">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="4" width="18" height="16" rx="2"/>
+                    <circle cx="9" cy="10" r="2"/>
+                    <path d="M3 16l5-4 4 3 4-5 5 6"/>
+                </svg>
+                <span class="rail-label">تصویر</span>
+            </button>
+
+            <button class="rail-ico" onclick="toast('ساخت موزیک — به‌زودی')" title="موزیک">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M9 18V5l12-2v13"/>
+                    <circle cx="6" cy="18" r="3"/>
+                    <circle cx="18" cy="16" r="3"/>
+                </svg>
+                <span class="rail-label">موزیک</span>
+            </button>
+
+            <button class="rail-ico" onclick="toast('گالری — به‌زودی')" title="گالری">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"/>
+                </svg>
+                <span class="rail-label">گالری</span>
+            </button>
+
+            <button class="rail-ico" onclick="toast('ابزارها — به‌زودی')" title="ابزارها">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3-3a1 1 0 000-1.4l-1.6-1.6a1 1 0 00-1.4 0l-3 3zM4 20l6.4-6.4"/>
+                    <circle cx="6.5" cy="17.5" r="2.5"/>
+                </svg>
+                <span class="rail-label">ابزارها</span>
+            </button>
+        </div>
+
+        <div class="rail-gap"></div>
+
+        <div class="rail-bottom">
+            <button class="rail-ico" onclick="toast('تنظیمات')" title="تنظیمات">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+                </svg>
+                <span class="rail-label">تنظیمات</span>
+            </button>
+
+            <button class="rail-avatar" onclick="openPanel()" title="پروفایل">
+                <span>ا</span>
+            </button>
+
+            <button class="rail-collapse-btn" onclick="toggleRail()" title="جمع کردن">
+                <svg id="rail-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                    <path d="M15 6l-6 6 6 6"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</aside>
+
+<!-- دکمه باز کردن ریل وقتی جمع شده -->
+<button class="rail-open-btn hidden" id="rail-open-btn" onclick="toggleRail()" title="باز کردن منو">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+        <path d="M9 6l6 6-6 6"/>
+    </svg>
+</button>
+
+<!-- ═══ صفحه اصلی ═══ -->
+<div class="page" id="page">
+
     <!-- هدر -->
     <header class="navbar">
         <div class="nav-right">
@@ -23,168 +127,318 @@
                 </div>
                 <span class="logo-text">آشا</span>
             </div>
-            <div class="top-tools">
+
+            <nav class="top-tools">
                 <button class="t-tool" title="خانه" onclick="goHome()">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/></svg>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/>
+                    </svg>
                 </button>
                 <button class="t-tool" title="موزیک" onclick="toast('ساخت موزیک — به‌زودی')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+                    </svg>
                 </button>
                 <button class="t-tool" title="ویدیو" onclick="toast('ساخت ویدیو — به‌زودی')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2V10z"/></svg>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2V10z"/>
+                    </svg>
                 </button>
                 <button class="t-tool" title="تصویر" onclick="toast('ساخت عکس — به‌زودی')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 16l5-4 4 3 4-5 5 6"/></svg>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 16l5-4 4 3 4-5 5 6"/>
+                    </svg>
                 </button>
                 <button class="t-tool" title="دستیار" onclick="selectCategory('general','دستیار')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="7" width="14" height="12" rx="3"/><circle cx="9" cy="12" r="1.3" fill="currentColor"/><circle cx="15" cy="12" r="1.3" fill="currentColor"/><path d="M9 16h6"/></svg>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="5" y="7" width="14" height="12" rx="3"/>
+                        <circle cx="9" cy="12" r="1.3" fill="currentColor"/>
+                        <circle cx="15" cy="12" r="1.3" fill="currentColor"/>
+                        <path d="M9 16h6"/>
+                    </svg>
                 </button>
-            </div>
+            </nav>
         </div>
+
         <div class="nav-left">
             <button class="model-chip" id="model-chip" onclick="toggleModels()">
-                <span class="model-ico">◈</span>
-                <span id="model-label">Gemini 3.6</span>
-                <span class="chev">▾</span>
+                <span class="model-dot"></span>
+                <span id="model-label">Gemini 2.0 Flash</span>
+                <svg class="chev-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
             </button>
-            <button class="t-tool" title="گفتگو" onclick="focusComposer()">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6a3 3 0 013-3h10a3 3 0 013 3v8a3 3 0 01-3 3H10l-4 3v-3H7a3 3 0 01-3-3V6z"/></svg>
+            <button class="t-tool nav-chat-btn" title="گفتگو جدید" onclick="goHome()">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M4 6a3 3 0 013-3h10a3 3 0 013 3v8a3 3 0 01-3 3H10l-4 3v-3H7a3 3 0 01-3-3V6z"/>
+                </svg>
             </button>
             <button class="avatar-btn" onclick="openPanel()" title="منو">ا</button>
         </div>
     </header>
 
-    <!-- بنر -->
+    <!-- بنر زیبا -->
     <div class="banner" id="banner">
-        <span>✨ قوی‌ترین مدل‌های هوش مصنوعی در یک پلتفرم — گفتگو را شروع کنید</span>
-        <button class="banner-x" onclick="this.parentElement.remove()">×</button>
+        <div class="banner-inner">
+            <div class="banner-content">
+                <div class="banner-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" fill="#fff" opacity=".9"/>
+                        <path d="M12 7.5l-4 2.5v5l4 2.5 4-2.5v-5l-4-2.5z" fill="#FF6A3D"/>
+                    </svg>
+                </div>
+                <div class="banner-texts">
+                    <span class="banner-title">آشا — هوش مصنوعی نسل جدید</span>
+                    <span class="banner-sub">گفتگو · تصویر · ویدیو · موزیک · همه در یک پلتفرم</span>
+                </div>
+                <div class="banner-pills">
+                    <span class="b-pill">✨ Gemini 2.0</span>
+                    <span class="b-pill">🚀 سریع</span>
+                    <span class="b-pill">🔒 امن</span>
+                </div>
+            </div>
+            <button class="banner-x" onclick="closeBanner()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
     </div>
 
-    <!-- محتوای مرکزی -->
+    <!-- فضای کار -->
     <main class="workspace" id="workspace">
         <div id="empty-state" class="empty-state">
-            <h1 class="hero-title">چی می‌خوای برات انجام بدم؟</h1>
+            <div class="empty-hero">
+                <div class="hero-glow"></div>
+                <div class="hero-icon-wrap">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" fill="url(#hg)" opacity=".95"/>
+                        <path d="M12 7.5l-4 2.5v5l4 2.5 4-2.5v-5l-4-2.5z" fill="#fff" opacity=".9"/>
+                        <defs>
+                            <linearGradient id="hg" x1="3" y1="2" x2="21" y2="22">
+                                <stop offset="0%" stop-color="#FF9A6B"/>
+                                <stop offset="100%" stop-color="#FF6A3D"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h1 class="hero-title">چی می‌خوای برات انجام بدم؟</h1>
+                <p class="hero-sub">از گفتگو تا ساخت محتوا — همه چیز اینجاست</p>
+            </div>
+
             <div class="feature-pills">
-                <button class="fpill" onclick="toast('ابزارها — به‌زودی')"><span>🧰</span>ابزارها</button>
-                <button class="fpill" onclick="toast('ساخت عکس — به‌زودی')"><span>🖼️</span>ساخت عکس</button>
-                <button class="fpill" onclick="toast('ساخت ویدیو — به‌زودی')"><span>🎬</span>ساخت ویدیو</button>
-                <button class="fpill" onclick="toast('ساخت موزیک — به‌زودی')"><span>🎵</span>ساخت موزیک</button>
-                <button class="fpill" onclick="selectCategory('general','دستیارها')"><span>🟢</span>دستیارها</button>
-                <button class="fpill" onclick="toast('صداگذاری — به‌زودی')"><span>🎙️</span>صداگذاری و دوبله</button>
+                <button class="fpill" onclick="toast('ابزارها — به‌زودی')">
+                    <span class="fp-ico">🧰</span><span>ابزارها</span>
+                </button>
+                <button class="fpill" onclick="toast('ساخت عکس — به‌زودی')">
+                    <span class="fp-ico">🖼️</span><span>ساخت عکس</span>
+                </button>
+                <button class="fpill" onclick="toast('ساخت ویدیو — به‌زودی')">
+                    <span class="fp-ico">🎬</span><span>ساخت ویدیو</span>
+                </button>
+                <button class="fpill" onclick="toast('ساخت موزیک — به‌زودی')">
+                    <span class="fp-ico">🎵</span><span>ساخت موزیک</span>
+                </button>
+                <button class="fpill fpill-active" onclick="selectCategory('general','دستیارها')">
+                    <span class="fp-ico">🤖</span><span>دستیارها</span>
+                </button>
+                <button class="fpill" onclick="toast('صداگذاری — به‌زودی')">
+                    <span class="fp-ico">🎙️</span><span>صداگذاری</span>
+                </button>
+            </div>
+
+            <!-- پیشنهادهای سریع -->
+            <div class="quick-suggests">
+                <p class="qs-label">پیشنهاد برای شروع</p>
+                <div class="qs-grid">
+                    <button class="qs-card" onclick="quickSend('یه جوک بامزه بگو!')">
+                        <span class="qs-ico">😄</span>
+                        <span>یه جوک بامزه!</span>
+                    </button>
+                    <button class="qs-card" onclick="quickSend('برام یه برنامه مطالعه هفتگی بنویس')">
+                        <span class="qs-ico">📅</span>
+                        <span>برنامه مطالعه</span>
+                    </button>
+                    <button class="qs-card" onclick="quickSend('یه ایده کسب‌وکار جالب پیشنهاد بده')">
+                        <span class="qs-ico">💡</span>
+                        <span>ایده کسب‌وکار</span>
+                    </button>
+                    <button class="qs-card" onclick="quickSend('یه شعر کوتاه فارسی بنویس')">
+                        <span class="qs-ico">✍️</span>
+                        <span>شعر فارسی</span>
+                    </button>
+                </div>
             </div>
         </div>
+
         <div id="messages" class="messages-box hidden"></div>
     </main>
 
     <!-- ورودی -->
     <div class="composer-wrap">
-        <div class="composer">
-            <textarea id="user-input" rows="1" placeholder="هرچی می‌خوای بپرس!" onkeydown="onEnter(event)" oninput="autoGrow(this)"></textarea>
+        <div class="composer" id="composer">
+            <textarea
+                id="user-input"
+                rows="1"
+                placeholder="هرچی می‌خوای بپرس..."
+                onkeydown="onEnter(event)"
+                oninput="autoGrow(this)"
+            ></textarea>
             <div class="composer-bottom">
                 <div class="composer-actions">
-                    <button class="c-btn send" id="send-btn" onclick="sendMessage()">↑</button>
-                    <button class="c-btn" onclick="toast('پیوست — به‌زودی')">📎</button>
-                    <button class="c-btn" onclick="toast('صدا — به‌زودی')">🎤</button>
+                    <button class="c-btn send" id="send-btn" onclick="sendMessage()" title="ارسال">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 19V5M5 12l7-7 7 7"/>
+                        </svg>
+                    </button>
+                    <button class="c-btn" onclick="toast('پیوست — به‌زودی')" title="پیوست فایل">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
+                        </svg>
+                    </button>
+                    <button class="c-btn" onclick="toast('صدا — به‌زودی')" title="پیام صوتی">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/>
+                            <path d="M19 10v2a7 7 0 01-14 0v-2M12 19v4M8 23h8"/>
+                        </svg>
+                    </button>
+                    <div class="c-divider"></div>
                     <label class="deep-toggle">
                         <input type="checkbox" id="deep-think">
                         <span class="toggle-ui"></span>
                         <span class="toggle-label">تفکر عمیق</span>
                     </label>
                 </div>
-                <div class="composer-hint">هوش مصنوعی ممکن است اشتباه کند</div>
+                <div class="composer-hint">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>
+                    </svg>
+                    هوش مصنوعی ممکن است اشتباه کند
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- نوار آیکون ثابت سمت راست (روی صفحه) -->
-<aside class="right-rail" id="right-rail">
-    <button class="rail-ico" onclick="openPanel()" title="منو">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    </button>
-    <button class="rail-ico active" onclick="goHome()" title="گفتگو">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6a3 3 0 013-3h10a3 3 0 013 3v8a3 3 0 01-3 3H10l-4 3v-3H7a3 3 0 01-3-3V6z"/></svg>
-    </button>
-    <button class="rail-ico" onclick="openPanel()" title="مدل‌ها">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l2.2 4.5L19 8.2l-3.5 3.4.8 4.9L12 14.2 7.7 16.5l.8-4.9L5 8.2l4.8-.7L12 3z"/></svg>
-    </button>
-    <button class="rail-ico" onclick="toast('ساخت ویدیو')" title="ویدیو">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2V10z"/></svg>
-    </button>
-    <button class="rail-ico" onclick="toast('ساخت عکس')" title="تصویر">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M3 16l5-4 4 3 4-5 5 6"/></svg>
-    </button>
-    <button class="rail-ico" onclick="toast('ساخت موزیک')" title="موزیک">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-    </button>
-    <button class="rail-ico" onclick="toast('گالری')" title="گالری">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h6v6H4zM14 6h6v4h-6zM14 14h6v4h-6zM4 16h6v2H4z"/></svg>
-    </button>
-    <div class="rail-gap"></div>
-    <button class="rail-ico dark" onclick="openPanel()" title="بیشتر">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L4 14h7l-1 8 10-14h-7l1-6z"/></svg>
-    </button>
-    <button class="rail-ico" onclick="toast('تنظیمات')" title="تنظیمات">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-    </button>
-    <button class="rail-collapse" onclick="toggleRail()" title="جمع/باز نوار">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>
-    </button>
-</aside>
-
-<!-- پنل کارت روی صفحه (از راست باز می‌شود) -->
+<!-- ═══ پنل کناری (از راست) ═══ -->
 <div class="panel-backdrop hidden" id="backdrop" onclick="closePanel()"></div>
 <aside class="side-panel" id="side-panel">
     <div class="panel-card">
-        <button class="panel-close" onclick="closePanel()" title="بستن">›</button>
+        <button class="panel-close" onclick="closePanel()" title="بستن">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 6l6 6-6 6"/>
+            </svg>
+        </button>
 
         <div class="panel-user">
             <div class="avatar">ا</div>
-            <div>
+            <div class="user-info">
                 <div class="user-name">کاربر آشا</div>
                 <div class="user-sub">ورود به حساب کاربری</div>
             </div>
+            <button class="user-login-btn" onclick="toast('ورود — به‌زودی')">ورود</button>
         </div>
 
         <div class="panel-scroll">
-            <button class="side-item active" onclick="goHome(); closePanel()"><span class="si">💬</span>گفتگو</button>
-            <button class="side-item" onclick="toggleModels()"><span class="si">✨</span>مدل‌ها</button>
-            <button class="side-item" onclick="toast('تاریخچه')"><span class="si">🕐</span>تاریخچه گفتگوها</button>
+            <button class="side-item active" onclick="goHome(); closePanel()">
+                <span class="si">💬</span><span>گفتگو جدید</span>
+            </button>
+            <button class="side-item" onclick="toggleModels()">
+                <span class="si">✨</span><span>انتخاب مدل</span>
+                <span class="si-badge">Gemini</span>
+            </button>
+            <button class="side-item" onclick="toast('تاریخچه — به‌زودی')">
+                <span class="si">🕐</span><span>تاریخچه گفتگوها</span>
+            </button>
 
             <div class="side-label">سرویس‌های اصلی</div>
             <div class="side-grid">
-                <button class="side-tile" onclick="toast('تصویر')"><span>🖼️</span>تصویر</button>
-                <button class="side-tile" onclick="toast('ویدیو')"><span>🎬</span>ویدیو</button>
-                <button class="side-tile" onclick="toast('گالری')"><span>🧩</span>گالری</button>
-                <button class="side-tile" onclick="toast('موزیک')"><span>🎵</span>موزیک</button>
+                <button class="side-tile" onclick="toast('تصویر — به‌زودی')">
+                    <span>🖼️</span><span>تصویر</span>
+                </button>
+                <button class="side-tile" onclick="toast('ویدیو — به‌زودی')">
+                    <span>🎬</span><span>ویدیو</span>
+                </button>
+                <button class="side-tile" onclick="toast('گالری — به‌زودی')">
+                    <span>🧩</span><span>گالری</span>
+                </button>
+                <button class="side-tile" onclick="toast('موزیک — به‌زودی')">
+                    <span>🎵</span><span>موزیک</span>
+                </button>
             </div>
 
             <div class="side-label">دستیارهای تخصصی</div>
-            <button class="side-item" onclick="selectCategory('shopping','فروشگاه')"><span class="si">🛍️</span>فروشگاه</button>
-            <button class="side-item" onclick="selectCategory('clinic','کلینیک')"><span class="si">🏥</span>کلینیک</button>
-            <button class="side-item" onclick="selectCategory('realestate','املاک')"><span class="si">🏠</span>املاک</button>
-            <button class="side-item" onclick="selectCategory('education','آموزش')"><span class="si">📚</span>آموزش</button>
-            <button class="side-item" onclick="selectCategory('restaurant','رستوران')"><span class="si">🍕</span>رستوران</button>
-            <button class="side-item" onclick="selectCategory('legal','حقوقی')"><span class="si">⚖️</span>حقوقی</button>
-            <button class="side-item" onclick="selectCategory('finance','مالی')"><span class="si">💰</span>مالی</button>
-            <button class="side-item" onclick="selectCategory('support','پشتیبانی')"><span class="si">🔧</span>پشتیبانی</button>
-            <button class="side-item" onclick="selectCategory('general','دستیار عمومی')"><span class="si">🤖</span>دستیار عمومی</button>
+            <button class="side-item" onclick="selectCategory('shopping','فروشگاه'); closePanel()">
+                <span class="si">🛍️</span><span>فروشگاه</span>
+            </button>
+            <button class="side-item" onclick="selectCategory('clinic','کلینیک'); closePanel()">
+                <span class="si">🏥</span><span>کلینیک</span>
+            </button>
+            <button class="side-item" onclick="selectCategory('realestate','املاک'); closePanel()">
+                <span class="si">🏠</span><span>املاک</span>
+            </button>
+            <button class="side-item" onclick="selectCategory('education','آموزش'); closePanel()">
+                <span class="si">📚</span><span>آموزش</span>
+            </button>
+            <button class="side-item" onclick="selectCategory('restaurant','رستوران'); closePanel()">
+                <span class="si">🍕</span><span>رستوران</span>
+            </button>
+            <button class="side-item" onclick="selectCategory('legal','حقوقی'); closePanel()">
+                <span class="si">⚖️</span><span>حقوقی</span>
+            </button>
+            <button class="side-item" onclick="selectCategory('finance','مالی'); closePanel()">
+                <span class="si">💰</span><span>مالی</span>
+            </button>
+            <button class="side-item" onclick="selectCategory('support','پشتیبانی'); closePanel()">
+                <span class="si">🔧</span><span>پشتیبانی</span>
+            </button>
+            <button class="side-item" onclick="selectCategory('general','دستیار عمومی'); closePanel()">
+                <span class="si">🤖</span><span>دستیار عمومی</span>
+            </button>
 
-            <div class="side-label">سایر</div>
-            <button class="side-item" onclick="toast('ابزارها')"><span class="si">🧰</span>ابزارها</button>
-            <button class="side-item" onclick="toast('صداگذاری')"><span class="si">🎙️</span>صداگذاری و دوبله<span class="badge">جدید</span></button>
-            <button class="side-item" onclick="toast('تنظیمات')"><span class="si">⚙️</span>تنظیمات</button>
+            <div class="side-label">سایر امکانات</div>
+            <button class="side-item" onclick="toast('ابزارها — به‌زودی')">
+                <span class="si">🧰</span><span>ابزارها</span>
+            </button>
+            <button class="side-item" onclick="toast('صداگذاری — به‌زودی')">
+                <span class="si">🎙️</span><span>صداگذاری و دوبله</span>
+                <span class="badge">جدید</span>
+            </button>
+            <button class="side-item" onclick="toast('تنظیمات')">
+                <span class="si">⚙️</span><span>تنظیمات</span>
+            </button>
         </div>
     </div>
 </aside>
 
+<!-- مدل منو -->
 <div class="model-menu hidden" id="model-menu">
-    <button onclick="pickModel('Gemini 3.6')">Gemini 3.6</button>
-    <button onclick="pickModel('دستیار عمومی')">دستیار عمومی</button>
-    <button onclick="pickModel('پشتیبانی فنی')">پشتیبانی فنی</button>
+    <div class="mm-header">انتخاب مدل هوش مصنوعی</div>
+    <button class="mm-item active" onclick="pickModel('Gemini 2.0 Flash')">
+        <span class="mm-dot" style="background:#8B5CF6"></span>
+        <div class="mm-info">
+            <span class="mm-name">Gemini 2.0 Flash</span>
+            <span class="mm-desc">سریع و دقیق</span>
+        </div>
+        <span class="mm-check">✓</span>
+    </button>
+    <button class="mm-item" onclick="pickModel('دستیار عمومی')">
+        <span class="mm-dot" style="background:#FF6A3D"></span>
+        <div class="mm-info">
+            <span class="mm-name">دستیار عمومی</span>
+            <span class="mm-desc">همه‌منظوره</span>
+        </div>
+    </button>
+    <button class="mm-item" onclick="pickModel('پشتیبانی فنی')">
+        <span class="mm-dot" style="background:#10B981"></span>
+        <div class="mm-info">
+            <span class="mm-name">پشتیبانی فنی</span>
+            <span class="mm-desc">متخصص فنی</span>
+        </div>
+    </button>
 </div>
-<div class="toast hidden" id="toast"></div>
 
+<div class="toast hidden" id="toast"></div>
 <script src="/static/app.js"></script>
 </body>
 </html>

@@ -4,7 +4,37 @@ let history = [];
 let loading = false;
 let streamBot = null;
 
+/* ══ تم‌های رنگی ══ */
+const THEMES = {
+    orange:{orange:'#FF6A3D',orange2:'#FF8F66',soft:'#FFF1EB',orangeRgb:'255,106,61',orange2Rgb:'255,143,102'},
+    purple:{orange:'#8B5CF6',orange2:'#A78BFA',soft:'#F3F0FF',orangeRgb:'139,92,246',orange2Rgb:'167,139,250'},
+    green: {orange:'#10B981',orange2:'#34D399',soft:'#ECFDF5',orangeRgb:'16,185,129',orange2Rgb:'52,211,153'},
+    blue:  {orange:'#3B82F6',orange2:'#60A5FA',soft:'#EFF6FF',orangeRgb:'59,130,246',orange2Rgb:'96,165,250'},
+    pink:  {orange:'#EC4899',orange2:'#F472B6',soft:'#FDF2F8',orangeRgb:'236,72,153',orange2Rgb:'244,114,182'}
+};
+
+function setTheme(name){
+    const t = THEMES[name] || THEMES.orange;
+    const root = document.documentElement.style;
+    root.setProperty('--orange', t.orange);
+    root.setProperty('--orange2', t.orange2);
+    root.setProperty('--soft', t.soft);
+    root.setProperty('--orange-rgb', t.orangeRgb);
+    root.setProperty('--orange2-rgb', t.orange2Rgb);
+    localStorage.setItem('asha-theme', name);
+    document.querySelectorAll('.swatch').forEach(sw => sw.classList.remove('active'));
+    const active = document.querySelector('.sw-' + name);
+    if (active) active.classList.add('active');
+}
+
+function applySavedTheme(){
+    const saved = localStorage.getItem('asha-theme') || 'orange';
+    setTheme(saved);
+}
+
 window.addEventListener('load', () => {
+    applySavedTheme();
+    updateSideWidth();
     try {
         const WA = window.Eitaa?.WebApp;
         if (!WA) return;
@@ -37,16 +67,38 @@ function toast(msg) {
     toast._t = setTimeout(() => el.classList.add('hidden'), 2200);
 }
 
+/* ══ مدیریت عرض فضای کناری (برای هل‌دادن محتوا) ══ */
+function updateSideWidth() {
+    const panelOpen = document.getElementById('side-panel').classList.contains('open');
+    const railCollapsed = document.body.classList.contains('rail-collapsed');
+    let w;
+    if (panelOpen) w = 'var(--panel)';
+    else if (railCollapsed) w = '0px';
+    else w = 'var(--rail)';
+    document.documentElement.style.setProperty('--side-width', w);
+}
+
+/* ══ بستن همه‌ی پنجره‌های شناور ══ */
+function closeAllOverlays() {
+    closePanel();
+    closeAvatarMenu();
+    closeAssistMenu();
+    closeThemeMenu();
+    document.getElementById('model-menu')?.classList.add('hidden');
+}
+
 /* ══ پنل کناری ══ */
 function openPanel() {
     closeAvatarMenu();
+    closeAssistMenu();
+    closeThemeMenu();
     document.getElementById('side-panel').classList.add('open');
-    document.getElementById('backdrop').classList.remove('hidden');
+    updateSideWidth();
 }
 
 function closePanel() {
     document.getElementById('side-panel').classList.remove('open');
-    document.getElementById('backdrop').classList.add('hidden');
+    updateSideWidth();
 }
 
 /* ══ منوی آواتار ══ */
@@ -56,23 +108,72 @@ function toggleAvatarMenu() {
         closeAvatarMenu();
     } else {
         closePanel();
+        closeAssistMenu();
+        closeThemeMenu();
         menu.classList.add('open');
         document.getElementById('avatar-backdrop').classList.remove('hidden');
     }
 }
 
 function closeAvatarMenu() {
-    document.getElementById('avatar-menu').classList.remove('open');
-    document.getElementById('avatar-backdrop').classList.add('hidden');
+    document.getElementById('avatar-menu')?.classList.remove('open');
+    document.getElementById('avatar-backdrop')?.classList.add('hidden');
+}
+
+/* ══ منوی شیشه‌ای دستیارها ══ */
+function toggleAssistMenu() {
+    const menu = document.getElementById('assist-menu');
+    if (menu.classList.contains('open')) {
+        closeAssistMenu();
+    } else {
+        closeAvatarMenu();
+        closeThemeMenu();
+        menu.classList.remove('hidden');
+        requestAnimationFrame(() => menu.classList.add('open'));
+    }
+}
+
+function closeAssistMenu() {
+    const menu = document.getElementById('assist-menu');
+    if (!menu) return;
+    menu.classList.remove('open');
+    setTimeout(() => menu.classList.add('hidden'), 300);
+}
+
+/* ══ منوی تم رنگی ══ */
+function toggleThemeMenu() {
+    const menu = document.getElementById('theme-menu');
+    if (menu.classList.contains('open')) {
+        closeThemeMenu();
+    } else {
+        closeAvatarMenu();
+        closeAssistMenu();
+        menu.classList.remove('hidden');
+        const saved = localStorage.getItem('asha-theme') || 'orange';
+        document.querySelectorAll('.swatch').forEach(sw => sw.classList.remove('active'));
+        document.querySelector('.sw-' + saved)?.classList.add('active');
+        requestAnimationFrame(() => menu.classList.add('open'));
+    }
+}
+
+function closeThemeMenu() {
+    const menu = document.getElementById('theme-menu');
+    if (!menu) return;
+    menu.classList.remove('open');
+    setTimeout(() => menu.classList.add('hidden'), 250);
 }
 
 function toggleRail() {
     const collapsed = document.body.classList.toggle('rail-collapsed');
     const openBtn = document.getElementById('rail-open-btn');
     if (openBtn) openBtn.classList.toggle('hidden', !collapsed);
+    updateSideWidth();
 }
 
 function toggleModels() {
+    closeAvatarMenu();
+    closeAssistMenu();
+    closeThemeMenu();
     document.getElementById('model-menu').classList.toggle('hidden');
 }
 
@@ -97,8 +198,7 @@ function goHome() {
     document.getElementById('messages').innerHTML = '';
     document.getElementById('messages').classList.add('hidden');
     document.getElementById('empty-state').classList.remove('hidden');
-    closePanel();
-    closeAvatarMenu();
+    closeAllOverlays();
     try { window.Eitaa?.WebApp?.BackButton?.hide(); } catch (e) {}
 }
 
@@ -113,8 +213,7 @@ function selectCategory(cat, title) {
         if (label) label.textContent = title;
     }
     haptic('light');
-    closePanel();
-    closeAvatarMenu();
+    closeAllOverlays();
     try { window.Eitaa?.WebApp?.BackButton?.show(); } catch (e) {}
     setTimeout(() => document.getElementById('user-input').focus(), 200);
 }
@@ -275,5 +374,17 @@ document.addEventListener('click', (e) => {
     if (avMenu && avMenu.classList.contains('open') &&
         !avMenu.contains(e.target) && avBtn && !avBtn.contains(e.target)) {
         closeAvatarMenu();
+    }
+
+    const asMenu = document.getElementById('assist-menu');
+    if (asMenu && asMenu.classList.contains('open') &&
+        !asMenu.contains(e.target) && !e.target.closest('.c-assist') && !e.target.closest('.fpill')) {
+        closeAssistMenu();
+    }
+
+    const thMenu = document.getElementById('theme-menu');
+    if (thMenu && thMenu.classList.contains('open') &&
+        !thMenu.contains(e.target) && !e.target.closest('.rail-ico') && !e.target.closest('.side-item')) {
+        closeThemeMenu();
     }
 });

@@ -6,11 +6,11 @@ let streamBot = null;
 
 /* ══ تم‌های رنگی ══ */
 const THEMES = {
-    orange:{orange:'#FF6A3D',orange2:'#FF8F66',soft:'#FFF1EB',orangeRgb:'255,106,61',orange2Rgb:'255,143,102'},
-    purple:{orange:'#8B5CF6',orange2:'#A78BFA',soft:'#F3F0FF',orangeRgb:'139,92,246',orange2Rgb:'167,139,250'},
-    green: {orange:'#10B981',orange2:'#34D399',soft:'#ECFDF5',orangeRgb:'16,185,129',orange2Rgb:'52,211,153'},
-    blue:  {orange:'#3B82F6',orange2:'#60A5FA',soft:'#EFF6FF',orangeRgb:'59,130,246',orange2Rgb:'96,165,250'},
-    pink:  {orange:'#EC4899',orange2:'#F472B6',soft:'#FDF2F8',orangeRgb:'236,72,153',orange2Rgb:'244,114,182'}
+    orange:{orange:'#FF7A54',orange2:'#FFA382',orange3:'#F2653A',soft:'#FFF3ED',orangeRgb:'255,122,84',orange2Rgb:'255,163,130'},
+    purple:{orange:'#8B5CF6',orange2:'#A78BFA',orange3:'#6D28D9',soft:'#F3F0FF',orangeRgb:'139,92,246',orange2Rgb:'167,139,250'},
+    green: {orange:'#10B981',orange2:'#34D399',orange3:'#047857',soft:'#ECFDF5',orangeRgb:'16,185,129',orange2Rgb:'52,211,153'},
+    blue:  {orange:'#3B82F6',orange2:'#60A5FA',orange3:'#1D4ED8',soft:'#EFF6FF',orangeRgb:'59,130,246',orange2Rgb:'96,165,250'},
+    pink:  {orange:'#EC4899',orange2:'#F472B6',orange3:'#BE185D',soft:'#FDF2F8',orangeRgb:'236,72,153',orange2Rgb:'244,114,182'}
 };
 
 function setTheme(name){
@@ -18,6 +18,7 @@ function setTheme(name){
     const root = document.documentElement.style;
     root.setProperty('--orange', t.orange);
     root.setProperty('--orange2', t.orange2);
+    root.setProperty('--orange3', t.orange3);
     root.setProperty('--soft', t.soft);
     root.setProperty('--orange-rgb', t.orangeRgb);
     root.setProperty('--orange2-rgb', t.orange2Rgb);
@@ -378,7 +379,7 @@ document.addEventListener('click', (e) => {
 
     const asMenu = document.getElementById('assist-menu');
     if (asMenu && asMenu.classList.contains('open') &&
-        !asMenu.contains(e.target) && !e.target.closest('.c-assist') && !e.target.closest('.fpill')) {
+        !asMenu.contains(e.target) && !e.target.closest('.t-tool') && !e.target.closest('.fpill')) {
         closeAssistMenu();
     }
 

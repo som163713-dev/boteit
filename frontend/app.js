@@ -1,4 +1,4 @@
-﻿const API = window.location.origin;
+const API = window.location.origin;
 let category = 'general';
 let history = [];
 let loading = false;
@@ -36,7 +36,7 @@ function selectCategory(cat, title) {
     history = [];
     document.getElementById('chat-title').textContent = title;
     const box = document.getElementById('messages');
-    box.innerHTML = <div class="welcome-bubble"></div>;
+    box.innerHTML = `<div class="welcome-bubble">${WELCOME[cat] || WELCOME.general}</div>`;
     showScreen('chat-screen');
     haptic('light');
     try { window.Eitaa?.WebApp?.BackButton?.show(); } catch(e) {}
@@ -96,13 +96,13 @@ async function sendMessage() {
     };
 
     try {
-        const res = await fetch(${API}/chat/stream, {
+        const res = await fetch(`${API}/chat/stream`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: text, category: category, history: history.slice(-10) })
         });
 
-        if (!res.ok || !res.body) throw new Error(HTTP );
+        if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
 
         clearTimeout(coldStartTimer);
         removeTyping();
@@ -149,7 +149,7 @@ async function sendMessage() {
 function addMsg(text, type) {
     const box = document.getElementById('messages');
     const div = document.createElement('div');
-    div.className = msg ;
+    div.className = `msg ${type}`;
     div.textContent = text;
     box.appendChild(div);
     scrollBottom();
@@ -166,7 +166,7 @@ function showTyping() {
     const div = document.createElement('div');
     div.id = 'typing';
     div.className = 'typing-wrap';
-    div.innerHTML = <div class="dots"><span></span><span></span><span></span></div><div id="cold-hint" class="cold-hint">☕ در حال بیدار کردن سرور هوشمند...<br><small>بار اول کمی زمان می‌بره</small></div>;
+    div.innerHTML = `<div class="dots"><span></span><span></span><span></span></div><div id="cold-hint" class="cold-hint">☕ در حال بیدار کردن سرور هوشمند...<br><small>بار اول کمی زمان می‌بره</small></div>`;
     box.appendChild(div);
     scrollBottom();
 }
@@ -184,7 +184,7 @@ function clearChat() {
     const confirm_fn = (ok) => {
         if (!ok) return;
         history = [];
-        document.getElementById('messages').innerHTML = <div class="welcome-bubble">چت پاک شد! سوال جدیدت رو بپرس 😊</div>;
+        document.getElementById('messages').innerHTML = `<div class="welcome-bubble">چت پاک شد! سوال جدیدت رو بپرس 😊</div>`;
         haptic('light');
     };
     try {

@@ -1,10 +1,10 @@
 import os
 
-APP_VERSION = "3.0.0"
+APP_VERSION = "3.0.1"
 APP_NAME = "Eitaa AI Miniapp"
 
-# مدل رایگان Gemini
-AI_MODEL = "gemini-2.0-flash"
+# مدل فعلی Gemini (جایگزین gemini-2.0-flash)
+AI_MODEL = "gemini-3.6-flash"
 MAX_TOKENS = 800
 TEMPERATURE = 0.7
 MAX_HISTORY = 10

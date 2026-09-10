@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from backend.config import AI_MODEL, MAX_TOKENS, TEMPERATURE, MAX_HISTORY, HF_TOKEN, HF_CHAT_URL
+from backend.config import AI_MODEL, MAX_TOKENS, TEMPERATURE, MAX_HISTORY, GEMINI_API_KEY, GEMINI_URL
 from backend.prompts import SYSTEM_PROMPTS
 import json
 import requests
@@ -31,69 +31,71 @@ def _as_text(value) -> str:
     return str(value)
 
 
-def build_messages(request: ChatRequest) -> list:
-    system = SYSTEM_PROMPTS.get(request.category, SYSTEM_PROMPTS.get("general", ""))
-    messages = [{"role": "system", "content": _as_text(system)}]
+def build_contents(request: ChatRequest) -> list:
+    """ساخت تاریخچه به فرمت Gemini."""
+    contents = []
 
     for msg in (request.history or [])[-MAX_HISTORY:]:
         if not isinstance(msg, dict):
             continue
         role = msg.get("role")
-        if role not in ("user", "assistant"):
+        content = _as_text(msg.get("content", "")).strip()
+        if not content:
             continue
-        content = _as_text(msg.get("content", ""))
-        if content:
-            messages.append({"role": role, "content": content})
+        # Gemini: user / model
+        if role == "user":
+            contents.append({"role": "user", "parts": [{"text": content}]})
+        elif role == "assistant":
+            contents.append({"role": "model", "parts": [{"text": content}]})
 
     user_msg = _as_text(request.message).strip()
     if user_msg:
-        messages.append({"role": "user", "content": user_msg})
+        contents.append({"role": "user", "parts": [{"text": user_msg}]})
 
-    return messages
+    return contents
 
 
-def _headers():
-    h = {"Content-Type": "application/json"}
-    if HF_TOKEN:
-        h["Authorization"] = f"Bearer {HF_TOKEN}"
-    return h
+def _system_text(category: str) -> str:
+    return _as_text(SYSTEM_PROMPTS.get(category, SYSTEM_PROMPTS.get("general", "")))
 
 
 @router.post("/chat")
 async def chat(request: ChatRequest):
     try:
-        messages = build_messages(request)
-        if len(messages) < 2:
+        if not GEMINI_API_KEY:
+            return {"success": False, "response": "کلید Gemini تنظیم نشده است."}
+
+        contents = build_contents(request)
+        if not contents:
             return {"success": False, "response": "پیام خالی است."}
 
         payload = {
-            "model": AI_MODEL,
-            "messages": messages,
-            "max_tokens": MAX_TOKENS,
-            "temperature": TEMPERATURE,
-            "stream": False,
+            "system_instruction": {
+                "parts": [{"text": _system_text(request.category)}]
+            },
+            "contents": contents,
+            "generationConfig": {
+                "temperature": TEMPERATURE,
+                "maxOutputTokens": MAX_TOKENS,
+            },
         }
 
-        res = requests.post(HF_CHAT_URL, headers=_headers(), json=payload, timeout=120)
+        url = f"{GEMINI_URL}?key={GEMINI_API_KEY}"
+        res = requests.post(url, json=payload, timeout=90)
 
         if res.status_code != 200:
-            err_body = res.text[:500]
+            err = res.text[:400]
             try:
-                err_json = res.json()
-                err_body = err_json.get("error", err_json)
-                if isinstance(err_body, dict):
-                    err_body = err_body.get("message") or json.dumps(err_body, ensure_ascii=False)
+                ej = res.json()
+                err = ej.get("error", {}).get("message") or json.dumps(ej, ensure_ascii=False)
             except Exception:
                 pass
-            return {
-                "success": False,
-                "response": f"خطای API ({res.status_code}): {err_body}",
-            }
+            return {"success": False, "response": f"خطای Gemini ({res.status_code}): {err}"}
 
         data = res.json()
         text = ""
         try:
-            text = data["choices"][0]["message"]["content"]
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
         except Exception:
             text = _as_text(data)
 
@@ -103,63 +105,61 @@ async def chat(request: ChatRequest):
         return {"success": True, "response": text}
 
     except Exception as e:
-        print(f"❌ Chat Error: {type(e).__name__}: {e}")
+        print(f"❌ Gemini Error: {type(e).__name__}: {e}")
         return {"success": False, "response": f"خطا در پردازش: {e}"}
 
 
 @router.post("/chat/stream")
 async def chat_stream(request: ChatRequest):
+    """استریم ساده: کل پاسخ را یک‌جا می‌گیرد و تکه‌تکه می‌فرستد (سازگار با فرانت)."""
+
     def event_generator():
         try:
-            messages = build_messages(request)
-            if len(messages) < 2:
+            if not GEMINI_API_KEY:
+                yield f"data: {json.dumps({'content': 'کلید Gemini تنظیم نشده.', 'done': True}, ensure_ascii=False)}\n\n"
+                return
+
+            contents = build_contents(request)
+            if not contents:
                 yield f"data: {json.dumps({'content': 'پیام خالی است.', 'done': True}, ensure_ascii=False)}\n\n"
                 return
 
             payload = {
-                "model": AI_MODEL,
-                "messages": messages,
-                "max_tokens": MAX_TOKENS,
-                "temperature": TEMPERATURE,
-                "stream": True,
+                "system_instruction": {
+                    "parts": [{"text": _system_text(request.category)}]
+                },
+                "contents": contents,
+                "generationConfig": {
+                    "temperature": TEMPERATURE,
+                    "maxOutputTokens": MAX_TOKENS,
+                },
             }
 
-            with requests.post(
-                HF_CHAT_URL,
-                headers=_headers(),
-                json=payload,
-                timeout=120,
-                stream=True,
-            ) as res:
-                if res.status_code != 200:
-                    err = res.text[:400]
-                    try:
-                        ej = res.json()
-                        err = ej.get("error", ej)
-                        if isinstance(err, dict):
-                            err = err.get("message") or json.dumps(err, ensure_ascii=False)
-                    except Exception:
-                        pass
-                    yield f"data: {json.dumps({'content': f'خطای API ({res.status_code}): {err}', 'done': True}, ensure_ascii=False)}\n\n"
-                    return
+            url = f"{GEMINI_URL}?key={GEMINI_API_KEY}"
+            res = requests.post(url, json=payload, timeout=90)
 
-                for raw in res.iter_lines(decode_unicode=True):
-                    if not raw:
-                        continue
-                    line = raw.strip() if isinstance(raw, str) else raw.decode("utf-8", errors="ignore").strip()
-                    if not line.startswith("data:"):
-                        continue
-                    data_str = line[5:].strip()
-                    if data_str == "[DONE]":
-                        break
-                    try:
-                        chunk = json.loads(data_str)
-                        delta = (chunk.get("choices") or [{}])[0].get("delta") or {}
-                        content = delta.get("content") or ""
-                        if content:
-                            yield f"data: {json.dumps({'content': content}, ensure_ascii=False)}\n\n"
-                    except Exception:
-                        continue
+            if res.status_code != 200:
+                err = res.text[:300]
+                try:
+                    ej = res.json()
+                    err = ej.get("error", {}).get("message") or str(ej)
+                except Exception:
+                    pass
+                yield f"data: {json.dumps({'content': f'خطای Gemini ({res.status_code}): {err}', 'done': True}, ensure_ascii=False)}\n\n"
+                return
+
+            data = res.json()
+            text = ""
+            try:
+                text = data["candidates"][0]["content"]["parts"][0]["text"]
+            except Exception:
+                text = "پاسخی دریافت نشد."
+
+            # تکه‌تکه برای حس استریم در فرانت
+            step = 12
+            for i in range(0, len(text), step):
+                chunk = text[i : i + step]
+                yield f"data: {json.dumps({'content': chunk}, ensure_ascii=False)}\n\n"
 
             yield f"data: {json.dumps({'done': True})}\n\n"
 

@@ -6,7 +6,7 @@
   --shadow:0 12px 40px rgba(28,25,23,.08);
   --font:"Vazirmatn",Tahoma,sans-serif;
   --safe-t:env(safe-area-inset-top,0px);--safe-b:env(safe-area-inset-bottom,0px);
-  --rail:72px;--panel:348px;--side-width:72px;
+  --rail:70px;--panel:348px;--side-width:70px;
   --ease:cubic-bezier(.22,1,.36,1);
   --grad:linear-gradient(135deg,var(--orange2) 0%,var(--orange) 55%,var(--orange3) 100%);
 }
@@ -69,13 +69,25 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .model-chip:hover{background:var(--soft)}
 .model-ico{color:#8B5CF6}.chev{color:var(--muted);font-size:11px}
 
+.new-chat-btn{
+  width:42px;height:42px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff;border:1px solid var(--border);color:#57534E;
+  box-shadow:0 4px 16px rgba(28,25,23,.05);
+  transition:transform .15s,box-shadow .15s,border-color .15s,color .15s;
+}
+.new-chat-btn:hover{border-color:var(--orange);color:var(--orange);box-shadow:0 6px 18px rgba(28,25,23,.08)}
+.new-chat-btn:active{transform:scale(.92)}
+
 .avatar-btn{
   width:40px;height:40px;border-radius:50%;
-  background:var(--grad);color:#fff;
-  font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 14px rgba(var(--orange-rgb),.28);
-  transition:transform .15s;
+  background:#EDE8E1;color:#8A8279;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(28,25,23,.06);
+  border:1px solid var(--border);
+  transition:transform .15s,background .15s,color .15s;
 }
+.avatar-btn:hover{background:#fff;color:var(--orange)}
 .avatar-btn:active{transform:scale(.92)}
 
 .banner{
@@ -141,8 +153,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   right:12px;
   left:auto;
   transform:translateY(-50%);
-  width:56px;padding:10px 0;z-index:20;
-  display:flex;flex-direction:column;align-items:center;gap:6px;
+  width:54px;padding:8px 0;z-index:20;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
   background:rgba(255,255,255,.92);backdrop-filter:blur(16px);
   border:1px solid rgba(255,255,255,.9);border-radius:22px;
   box-shadow:var(--shadow);
@@ -165,7 +177,7 @@ body.rail-collapsed .right-rail{
 }
 
 .rail-ico{
-  width:44px;height:44px;border-radius:14px;flex-shrink:0;
+  width:42px;height:42px;border-radius:13px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
   color:#57534E;transition:background .15s,color .15s,transform .15s;
 }
@@ -173,9 +185,9 @@ body.rail-collapsed .right-rail{
 .rail-ico.active{background:var(--soft);color:var(--orange)}
 .rail-ico.dark{background:#1c1917;color:#fff}
 .rail-ico.dark:hover{background:#333;color:#fff}
-.rail-gap{flex:1;min-height:12px}
+.rail-gap{flex:1;min-height:10px}
 .rail-collapse{
-  width:44px;height:32px;border-radius:10px;color:var(--muted);flex-shrink:0;
+  width:42px;height:30px;border-radius:10px;color:var(--muted);flex-shrink:0;
   display:flex;align-items:center;justify-content:center;margin-top:2px;
 }
 .rail-collapse:hover{background:var(--soft);color:var(--orange)}
@@ -217,7 +229,7 @@ body.rail-collapsed #rail-arrow{transform:rotate(180deg)}
   position:fixed;
   top:12px;right:12px;bottom:12px;
   left:auto;
-  width:56px;
+  width:54px;
   z-index:50;
   overflow:hidden;
   opacity:0;
@@ -312,7 +324,7 @@ body.rail-collapsed #rail-arrow{transform:rotate(180deg)}
 }
 .avatar-menu{
   position:fixed;
-  top:70px;left:20px;right:auto;
+  top:70px;right:20px;left:auto;
   width:340px;max-width:calc(100vw - 40px);
   z-index:46;
   background:linear-gradient(to top, var(--soft) 0%, #FFFDFB 55%, #ffffff 100%);
@@ -336,7 +348,7 @@ body.rail-collapsed #rail-arrow{transform:rotate(180deg)}
   pointer-events:auto;
 }
 .avatar-menu::before{
-  content:"";position:absolute;bottom:-50px;right:-30px;
+  content:"";position:absolute;bottom:-50px;left:-30px;
   width:160px;height:160px;border-radius:50%;
   background:radial-gradient(circle,rgba(var(--orange2-rgb),.16),transparent 70%);
   pointer-events:none;

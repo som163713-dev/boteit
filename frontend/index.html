@@ -36,11 +36,11 @@
 
         <div class="nav-center">
             <div class="top-tools">
-                <button class="t-tool" title="خانه" onclick="goHome()">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10.5L12 4l8 6.5V20a1 1 0 01-1 1h-5v-6H10v6H5a1 1 0 01-1-1v-9.5z"/></svg>
+                <button class="t-tool" title="گالری" onclick="toast('گالری — به‌زودی')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7a2 2 0 012-2h4.5l1.5 2H19a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2V7z"/></svg>
                 </button>
-                <button class="t-tool" title="موزیک" onclick="toast('ساخت موزیک — به‌زودی')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                <button class="t-tool" title="ابزارها" onclick="toast('ابزارها — به‌زودی')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 005.4-5.4l-2.15 2.15-2-2 2.15-2.15z"/></svg>
                 </button>
                 <button class="t-tool" title="ویدیو" onclick="toast('ساخت ویدیو — به‌زودی')">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2V10z"/></svg>
@@ -64,7 +64,7 @@
         </div>
 
         <div class="nav-left">
-            <button class="avatar-btn" onclick="openPanel()" title="منو">ا</button>
+            <button class="avatar-btn" id="avatar-btn" onclick="toggleAvatarMenu()" title="حساب کاربری">ا</button>
         </div>
     </header>
 
@@ -193,6 +193,54 @@
         </div>
     </div>
 </aside>
+
+<!-- منوی کشویی آواتار (باز شدن از بالا به پایین) -->
+<div class="avatar-backdrop hidden" id="avatar-backdrop" onclick="closeAvatarMenu()"></div>
+<div class="avatar-menu" id="avatar-menu">
+    <div class="am-header">
+        <div class="am-avatar">ا</div>
+        <div>
+            <div class="am-name">کاربر آشا</div>
+            <div class="am-sub">ورود به حساب کاربری</div>
+        </div>
+        <button class="am-close" onclick="closeAvatarMenu()">×</button>
+    </div>
+
+    <div class="am-body">
+        <div class="am-label">دسترسی سریع</div>
+        <div class="side-grid">
+            <button class="side-tile" onclick="toast('تصویر')"><span>🖼️</span>تصویر</button>
+            <button class="side-tile" onclick="toast('ویدیو')"><span>🎬</span>ویدیو</button>
+            <button class="side-tile" onclick="toast('گالری')"><span>🧩</span>گالری</button>
+            <button class="side-tile" onclick="toast('موزیک')"><span>🎵</span>موزیک</button>
+        </div>
+
+        <div class="am-label">آخرین ساخته‌ها</div>
+        <div class="am-recent-row">
+            <button class="am-recent-item am-c1" onclick="toast('پرتره هنری')">
+                <span class="am-emoji">🖼️</span>
+                <span class="am-cap">پرتره هنری</span>
+            </button>
+            <button class="am-recent-item am-c2" onclick="toast('ویدیو تبلیغاتی')">
+                <span class="am-emoji">🎬</span>
+                <span class="am-cap">ویدیو تبلیغاتی</span>
+            </button>
+            <button class="am-recent-item am-c3" onclick="toast('موزیک آرامش')">
+                <span class="am-emoji">🎵</span>
+                <span class="am-cap">موزیک آرامش</span>
+            </button>
+            <button class="am-recent-item am-c4" onclick="toast('گفتگو با دستیار')">
+                <span class="am-emoji">💬</span>
+                <span class="am-cap">گفتگو با دستیار</span>
+            </button>
+        </div>
+
+        <div class="am-footer">
+            <button class="side-item" onclick="toast('تنظیمات')"><span class="si">⚙️</span>تنظیمات حساب</button>
+            <button class="side-item am-logout" onclick="toast('خروج')"><span class="si">🚪</span>خروج از حساب</button>
+        </div>
+    </div>
+</div>
 
 <div class="model-menu hidden" id="model-menu">
     <button onclick="pickModel('Gemini 3.6')">Gemini 3.6</button>

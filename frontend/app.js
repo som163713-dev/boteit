@@ -18,15 +18,15 @@ window.addEventListener('load', () => {
 });
 
 const WELCOME = {
-    shopping: 'سلام! 🛍️ به فروشگاه هوشمند خوش اومدی!\nچه محصولی دنبالش هستی؟',
-    clinic: 'سلام! 🏥 به کلینیک هوشمند خوش اومدی!\nچطور می‌تونم کمکت کنم؟',
+    shopping:   'سلام! 🛍️ به فروشگاه هوشمند خوش اومدی!\nچه محصولی دنبالش هستی؟',
+    clinic:     'سلام! 🏥 به کلینیک هوشمند خوش اومدی!\nچطور می‌تونم کمکت کنم؟',
     realestate: 'سلام! 🏠 به مشاور هوشمند املاک خوش اومدی!\nدنبال خرید، فروش یا اجاره هستی؟',
-    education: 'سلام! 📚 به دستیار آموزشی خوش اومدی!\nچه سوال درسی داری؟',
+    education:  'سلام! 📚 به دستیار آموزشی خوش اومدی!\nچه سوال درسی داری؟',
     restaurant: 'سلام! 🍕 به رستوران هوشمند خوش اومدی!\nمنو رو ببین یا سفارش بده!',
-    legal: 'سلام! ⚖️ به مشاور حقوقی هوشمند خوش اومدی!\nسوالت رو بپرس!',
-    finance: 'سلام! 💰 به مشاور مالی هوشمند خوش اومدی!\nچطور می‌تونم کمکت کنم؟',
-    support: 'سلام! 🔧 به پشتیبانی فنی خوش اومدی!\nمشکلت رو توضیح بده!',
-    general: 'سلام! 🤖 من دستیار هوشمند توام!\nهر سوالی داری بپرس!'
+    legal:      'سلام! ⚖️ به مشاور حقوقی هوشمند خوش اومدی!\nسوالت رو بپرس!',
+    finance:    'سلام! 💰 به مشاور مالی هوشمند خوش اومدی!\nچطور می‌تونم کمکت کنم؟',
+    support:    'سلام! 🔧 به پشتیبانی فنی خوش اومدی!\nمشکلت رو توضیح بده!',
+    general:    'سلام! 🤖 من دستیار هوشمند توام!\nهر سوالی داری بپرس!'
 };
 
 function toast(msg) {
@@ -48,7 +48,9 @@ function closePanel() {
 }
 
 function toggleRail() {
-    document.body.classList.toggle('rail-collapsed');
+    const collapsed = document.body.classList.toggle('rail-collapsed');
+    const openBtn = document.getElementById('rail-open-btn');
+    if (openBtn) openBtn.classList.toggle('hidden', !collapsed);
 }
 
 function toggleModels() {
@@ -233,16 +235,17 @@ function haptic(type) {
     try {
         const hf = window.Eitaa?.WebApp?.HapticFeedback;
         if (!hf) return;
-        if (type === 'light') hf.impactOccurred('light');
+        if (type === 'light')   hf.impactOccurred('light');
         if (type === 'success') hf.notificationOccurred('success');
-        if (type === 'error') hf.notificationOccurred('error');
+        if (type === 'error')   hf.notificationOccurred('error');
     } catch (e) {}
 }
 
 document.addEventListener('click', (e) => {
     const menu = document.getElementById('model-menu');
     const chip = document.getElementById('model-chip');
-    if (menu && !menu.classList.contains('hidden') && !menu.contains(e.target) && chip && !chip.contains(e.target)) {
+    if (menu && !menu.classList.contains('hidden') &&
+        !menu.contains(e.target) && chip && !chip.contains(e.target)) {
         menu.classList.add('hidden');
     }
 });

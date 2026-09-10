@@ -6,23 +6,17 @@ let streamBot = null;
 
 // ── Init ──────────────────────────────────────────────
 window.addEventListener('load', () => {
-    initEitaa();
-});
-
-function initEitaa() {
     try {
         const WA = window.Eitaa?.WebApp;
         if (!WA) return;
-        WA.ready();
-        WA.expand();
+        WA.ready(); WA.expand();
         WA.setHeaderColor('#FF6A3D');
         WA.setBackgroundColor('#F9F5F1');
         if (WA.disableVerticalSwipes) WA.disableVerticalSwipes();
         WA.BackButton.onClick(goHome);
-    } catch (e) {}
-}
+    } catch(e) {}
+});
 
-// ── Welcome ───────────────────────────────────────────
 const WELCOME = {
     shopping:   'سلام! 🛍️ به فروشگاه هوشمند خوش اومدی!\nچه محصولی دنبالش هستی؟',
     clinic:     'سلام! 🏥 به کلینیک هوشمند خوش اومدی!\nچطور می‌تونم کمکت کنم؟',
@@ -48,22 +42,22 @@ function toast(msg) {
 function closeBanner() {
     const b = document.getElementById('banner');
     if (!b) return;
-    b.style.transition = 'opacity .2s, max-height .3s, margin .3s';
-    b.style.opacity    = '0';
-    b.style.maxHeight  = '0';
-    b.style.margin     = '0';
-    b.style.overflow   = 'hidden';
-    setTimeout(() => b.remove(), 320);
+    b.style.transition = 'opacity .2s, max-height .3s .05s, margin .3s .05s, padding .3s .05s';
+    b.style.opacity   = '0';
+    b.style.maxHeight = '0';
+    b.style.margin    = '0';
+    b.style.padding   = '0';
+    b.style.overflow  = 'hidden';
+    setTimeout(() => b.remove(), 350);
 }
 
-// ── Rail ──────────────────────────────────────────────
+// ── Rail جمع/باز ─────────────────────────────────────
 function toggleRail() {
-    const collapsed = document.body.classList.toggle('rail-collapsed');
-    const openBtn   = document.getElementById('rail-open-btn');
-    if (openBtn) openBtn.classList.toggle('hidden', !collapsed);
+    const rail = document.getElementById('rail');
+    rail.classList.toggle('collapsed');
 }
 
-// ── Panel ─────────────────────────────────────────────
+// ── Panel (موبایل) ────────────────────────────────────
 function openPanel() {
     document.getElementById('side-panel').classList.add('open');
     document.getElementById('backdrop').classList.remove('hidden');
@@ -79,30 +73,28 @@ function toggleModels() {
     document.getElementById('model-menu').classList.toggle('hidden');
 }
 
-function pickModel(name) {
+function pickModel(name, btn) {
     document.getElementById('model-label').textContent = name;
     document.getElementById('model-menu').classList.add('hidden');
-
-    // آپدیت رنگ dot
-    const dots = { 'Gemini 2.0 Flash': '#8B5CF6', 'دستیار عمومی': '#FF6A3D', 'پشتیبانی فنی': '#10B981' };
-    const dot = document.querySelector('.model-dot');
-    if (dot && dots[name]) dot.style.background = dots[name];
-
-    // تیک فعال
-    document.querySelectorAll('.mm-item').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.mm-check').forEach(el => el.remove());
-    event.currentTarget.classList.add('active');
-    const check = document.createElement('span');
-    check.className = 'mm-check';
-    check.textContent = '✓';
-    event.currentTarget.appendChild(check);
-
+    document.querySelectorAll('.mm-item').forEach(el => {
+        el.classList.remove('active');
+        el.querySelector('.mm-check')?.remove();
+    });
+    if (btn) {
+        btn.classList.add('active');
+        const chk = document.createElement('span');
+        chk.className = 'mm-check';
+        chk.textContent = '✓';
+        btn.appendChild(chk);
+    }
     toast('مدل: ' + name);
 }
 
 // ── Navigation ────────────────────────────────────────
-function focusComposer() {
-    document.getElementById('user-input').focus();
+function setRailActive(id) {
+    document.querySelectorAll('.rail-item').forEach(b => b.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
 }
 
 function showChatUI() {
@@ -117,37 +109,27 @@ function goHome() {
     document.getElementById('messages').classList.add('hidden');
     document.getElementById('empty-state').classList.remove('hidden');
     closePanel();
-    setRailActive('rail-chat');
-    try { window.Eitaa?.WebApp?.BackButton?.hide(); } catch (e) {}
-}
-
-function setRailActive(id) {
-    document.querySelectorAll('.rail-ico').forEach(b => b.classList.remove('active'));
-    const el = document.getElementById(id);
-    if (el) el.classList.add('active');
+    setRailActive('rail-home');
+    try { window.Eitaa?.WebApp?.BackButton?.hide(); } catch(e) {}
 }
 
 function selectCategory(cat, title) {
     category = cat;
     history  = [];
-
     const box = document.getElementById('messages');
     box.innerHTML = '';
     addBotMsg(WELCOME[cat] || WELCOME.general);
     showChatUI();
-
     if (title) {
         const label = document.getElementById('model-label');
         if (label) label.textContent = title;
     }
-
     haptic('light');
     closePanel();
-    try { window.Eitaa?.WebApp?.BackButton?.show(); } catch (e) {}
+    try { window.Eitaa?.WebApp?.BackButton?.show(); } catch(e) {}
     setTimeout(() => document.getElementById('user-input').focus(), 200);
 }
 
-// ── Quick send ────────────────────────────────────────
 function quickSend(text) {
     const input = document.getElementById('user-input');
     input.value = text;
@@ -178,7 +160,6 @@ async function sendMessage() {
     showChatUI();
     input.value = '';
     autoGrow(input);
-
     addUserMsg(text);
     history.push({ role: 'user', content: text });
     setLoading(true);
@@ -206,15 +187,10 @@ async function sendMessage() {
         const res = await fetch(`${API}/api/chat/stream`, {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                message:  text,
-                category: category,
-                history:  history.slice(-10)
-            })
+            body: JSON.stringify({ message: text, category, history: history.slice(-10) })
         });
 
         if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
-
         clearTimeout(coldTimer);
         removeTyping();
 
@@ -225,34 +201,28 @@ async function sendMessage() {
         while (true) {
             const { value, done } = await reader.read();
             if (done) break;
-
             buffer += decoder.decode(value, { stream: true });
             const lines = buffer.split('\n');
             buffer = lines.pop();
-
             for (const line of lines) {
                 if (!line.startsWith('data:')) continue;
                 try {
                     const data = JSON.parse(line.slice(5).trim());
-
                     if (data.content) {
                         if (firstChunk) {
-                            botEl      = addBotMsg('');
-                            streamBot  = botEl;
+                            botEl = addBotMsg('');
+                            streamBot = botEl;
                             firstChunk = false;
                         }
                         fullText += data.content;
                         renderBotContent(botEl, fullText);
                         scrollBottom();
                     }
-
                     if (data.done) saveHistory();
-
-                } catch (_) {}
+                } catch(_) {}
             }
         }
 
-        // buffer باقی‌مانده
         if (buffer.startsWith('data:')) {
             try {
                 const data = JSON.parse(buffer.slice(5).trim());
@@ -260,13 +230,13 @@ async function sendMessage() {
                     fullText += data.content;
                     renderBotContent(botEl, fullText);
                 }
-            } catch (_) {}
+            } catch(_) {}
         }
 
         saveHistory();
         if (!fullText) addBotMsg('پاسخی دریافت نشد. دوباره تلاش کن! 🔄');
 
-    } catch (err) {
+    } catch(err) {
         clearTimeout(coldTimer);
         removeTyping();
         if (botEl && !fullText) botEl.remove();
@@ -280,7 +250,7 @@ async function sendMessage() {
     input.focus();
 }
 
-// ── Message Helpers ───────────────────────────────────
+// ── Message helpers ───────────────────────────────────
 function addUserMsg(text) {
     const box = document.getElementById('messages');
     const div = document.createElement('div');
@@ -296,25 +266,19 @@ function addBotMsg(text) {
     const div = document.createElement('div');
     div.className = 'msg bot';
     if (text) renderBotContent(div, text);
-
-    // کپی با دابل‌کلیک
     div.addEventListener('dblclick', () => {
         navigator.clipboard?.writeText(div.textContent)
             .then(() => toast('کپی شد! 📋'))
             .catch(() => {});
     });
-
     box.appendChild(div);
     scrollBottom();
     return div;
 }
 
 function renderBotContent(el, text) {
-    // Markdown ساده
     const html = text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
         .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         .replace(/\*(.*?)\*/g, '<em>$1</em>')
         .replace(/`([^`\n]+)`/g, '<code>$1</code>')
@@ -327,16 +291,12 @@ function scrollBottom() {
     requestAnimationFrame(() => { box.scrollTop = box.scrollHeight });
 }
 
-// ── Typing indicator ──────────────────────────────────
 function showTyping() {
     const box = document.getElementById('messages');
     const div = document.createElement('div');
-    div.id        = 'typing';
+    div.id = 'typing';
     div.className = 'typing-wrap';
-    div.innerHTML = `
-        <div class="dots"><span></span><span></span><span></span></div>
-        <div id="cold-hint" class="cold-hint">در حال آماده‌سازی پاسخ...</div>
-    `;
+    div.innerHTML = `<div class="dots"><span></span><span></span><span></span></div><div id="cold-hint" class="cold-hint">در حال آماده‌سازی پاسخ...</div>`;
     box.appendChild(div);
     scrollBottom();
 }
@@ -345,7 +305,6 @@ function removeTyping() {
     document.getElementById('typing')?.remove();
 }
 
-// ── Loading state ─────────────────────────────────────
 function setLoading(state) {
     loading = state;
     const btn = document.getElementById('send-btn');
@@ -353,7 +312,6 @@ function setLoading(state) {
     btn.style.opacity = state ? '.5' : '1';
 }
 
-// ── Haptic ────────────────────────────────────────────
 function haptic(type) {
     try {
         const hf = window.Eitaa?.WebApp?.HapticFeedback;
@@ -361,18 +319,14 @@ function haptic(type) {
         if (type === 'light')   hf.impactOccurred('light');
         if (type === 'success') hf.notificationOccurred('success');
         if (type === 'error')   hf.notificationOccurred('error');
-    } catch (e) {}
+    } catch(e) {}
 }
 
-// ── Close on outside click ────────────────────────────
-document.addEventListener('click', (e) => {
+document.addEventListener('click', e => {
     const menu = document.getElementById('model-menu');
     const chip = document.getElementById('model-chip');
-    if (
-        menu && !menu.classList.contains('hidden') &&
-        !menu.contains(e.target) &&
-        chip && !chip.contains(e.target)
-    ) {
+    if (menu && !menu.classList.contains('hidden') &&
+        !menu.contains(e.target) && chip && !chip.contains(e.target)) {
         menu.classList.add('hidden');
     }
 });

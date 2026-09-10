@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>هوشا</title>
+    <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="app">
+    <!-- سایدبار راست -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-user">
+            <div class="avatar">ا</div>
+            <div class="user-meta">
+                <div class="user-name">کاربر هوشا</div>
+                <div class="user-sub">ورود به حساب کاربری</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <button class="side-item active" data-panel="chat" onclick="setPanel('chat')">
+                <span class="si">💬</span><span>گفتگو</span>
+            </button>
+            <button class="side-item" data-panel="models" onclick="setPanel('models')">
+                <span class="si">✨</span><span>مدل‌ها</span>
+            </button>
+            <button class="side-item" data-panel="history" onclick="setPanel('history')">
+                <span class="si">🕐</span><span>تاریخچه گفتگوها</span>
+            </button>
+
+            <div class="side-label">سرویس‌های اصلی</div>
+            <div class="side-grid">
+                <button class="side-tile" onclick="toast('به‌زودی')"><span>🖼️</span>تصویر</button>
+                <button class="side-tile" onclick="toast('به‌زودی')"><span>🎬</span>ویدیو</button>
+                <button class="side-tile" onclick="toast('به‌زودی')"><span>🧩</span>گالری</button>
+                <button class="side-tile" onclick="toast('به‌زودی')"><span>🎵</span>موزیک</button>
+            </div>
+
+            <div class="side-label">سایر امکانات</div>
+            <button class="side-item" onclick="selectCategory('general','دستیار عمومی')"><span class="si">🤖</span><span>دستیارها</span></button>
+            <button class="side-item" onclick="toast('به‌زودی')"><span class="si">🧰</span><span>ابزارها</span></button>
+            <button class="side-item" onclick="toast('به‌زودی')"><span class="si">🎙️</span><span>صداگذاری و دوبله</span><span class="badge">جدید</span></button>
+            <button class="side-item" onclick="toast('به‌زودی')"><span class="si">📢</span><span>کانال پیام‌رسان</span></button>
+            <button class="side-item" onclick="toast('تنظیمات')"><span class="si">⚙️</span><span>تنظیمات</span></button>
+        </nav>
+    </aside>
+
+    <!-- محتوای اصلی -->
+    <div class="main">
+        <!-- نوار بالا -->
+        <header class="navbar">
+            <div class="nav-right">
+                <button class="menu-btn" onclick="toggleSidebar()" aria-label="منو">☰</button>
+                <div class="logo" onclick="goHome()">
+                    <div class="logo-mark">◆</div>
+                    <span class="logo-text">هوشا</span>
+                </div>
+                <div class="nav-icons desktop-only">
+                    <button class="nav-ico" title="خانه" onclick="goHome()">🏠</button>
+                    <button class="nav-ico" title="موزیک" onclick="toast('به‌زودی')">🎵</button>
+                    <button class="nav-ico" title="ویدیو" onclick="toast('به‌زودی')">🎬</button>
+                    <button class="nav-ico" title="تصویر" onclick="toast('به‌زودی')">🖼️</button>
+                    <button class="nav-ico" title="ربات" onclick="selectCategory('general','دستیار')">🤖</button>
+                </div>
+            </div>
+            <div class="nav-left">
+                <button class="model-chip" id="model-chip" onclick="toggleModels()">
+                    <span class="model-dot"></span>
+                    <span id="model-label">Gemini 3.6</span>
+                    <span class="chev">▾</span>
+                </button>
+                <button class="nav-ico" onclick="toggleSidebar()">👤</button>
+            </div>
+        </header>
+
+        <!-- بنر -->
+        <div class="banner" id="banner">
+            <span>✨ قوی‌ترین مدل‌های هوش مصنوعی در یکجا — همین حالا گفتگو را شروع کنید</span>
+            <button class="banner-x" onclick="document.getElementById('banner').remove()">×</button>
+        </div>
+
+        <!-- صفحه خوش‌آمد / چت -->
+        <div class="workspace" id="workspace">
+            <!-- حالت خالی (مثل هوشا) -->
+            <div id="empty-state" class="empty-state">
+                <h1 class="hero-title">چی می‌خوای برات انجام بدم؟</h1>
+
+                <div class="feature-pills">
+                    <button class="fpill" onclick="toast('به‌زودی — ابزارها')"><span>🧰</span>ابزارها</button>
+                    <button class="fpill" onclick="toast('به‌زودی — ساخت عکس')"><span>🖼️</span>ساخت عکس</button>
+                    <button class="fpill" onclick="toast('به‌زودی — ساخت ویدیو')"><span>🎬</span>ساخت ویدیو</button>
+                    <button class="fpill" onclick="toast('به‌زودی — ساخت موزیک')"><span>🎵</span>ساخت موزیک</button>
+                    <button class="fpill" onclick="selectCategory('general','دستیارها')"><span>🟢</span>دستیارها</button>
+                    <button class="fpill" onclick="toast('به‌زودی — صداگذاری')"><span>🎙️</span>صداگذاری و دوبله</button>
+                </div>
+
+                <div class="category-row">
+                    <button class="cat-mini" onclick="selectCategory('shopping','فروشگاه')">🛍️ فروشگاه</button>
+                    <button class="cat-mini" onclick="selectCategory('clinic','کلینیک')">🏥 کلینیک</button>
+                    <button class="cat-mini" onclick="selectCategory('realestate','املاک')">🏠 املاک</button>
+                    <button class="cat-mini" onclick="selectCategory('education','آموزش')">📚 آموزش</button>
+                    <button class="cat-mini" onclick="selectCategory('restaurant','رستوران')">🍕 رستوران</button>
+                    <button class="cat-mini" onclick="selectCategory('legal','حقوقی')">⚖️ حقوقی</button>
+                    <button class="cat-mini" onclick="selectCategory('finance','مالی')">💰 مالی</button>
+                    <button class="cat-mini" onclick="selectCategory('support','پشتیبانی')">🔧 پشتیبانی</button>
+                </div>
+            </div>
+
+            <!-- پیام‌ها -->
+            <div id="messages" class="messages-box hidden"></div>
+        </div>
+
+        <!-- باکس ورودی پایین (مثل هوشا) -->
+        <div class="composer-wrap">
+            <div class="composer">
+                <div class="composer-top">
+                    <textarea id="user-input" rows="1" placeholder="هرچی می‌خوای بپرس!" onkeydown="onEnter(event)" oninput="autoGrow(this)"></textarea>
+                </div>
+                <div class="composer-bottom">
+                    <div class="composer-actions">
+                        <button class="c-btn send" id="send-btn" onclick="sendMessage()" title="ارسال">↑</button>
+                        <button class="c-btn" onclick="toast('به‌زودی')" title="پیوست">📎</button>
+                        <button class="c-btn" onclick="toast('به‌زودی')" title="صدا">🎤</button>
+                        <label class="deep-toggle" title="تفکر عمیق">
+                            <input type="checkbox" id="deep-think">
+                            <span class="toggle-ui"></span>
+                            <span class="toggle-label">تفکر عمیق</span>
+                        </label>
+                    </div>
+                    <div class="composer-hint">هوش مصنوعی ممکن است اشتباه کند</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نوار آیکون شناور (دسکتاپ) -->
+    <div class="rail desktop-only">
+        <button class="rail-btn active" onclick="goHome()">💬</button>
+        <button class="rail-btn" onclick="setPanel('models')">✨</button>
+        <button class="rail-btn" onclick="toast('ویدیو')">🎬</button>
+        <button class="rail-btn" onclick="toast('تصویر')">🖼️</button>
+        <button class="rail-btn" onclick="toast('موزیک')">🎵</button>
+        <button class="rail-btn" onclick="toast('گالری')">📁</button>
+        <div class="rail-spacer"></div>
+        <button class="rail-btn dark" onclick="toggleSidebar()">⚡</button>
+        <button class="rail-btn" onclick="toast('تنظیمات')">⚙️</button>
+    </div>
+</div>
+
+<!-- منوی مدل‌ها -->
+<div class="model-menu hidden" id="model-menu">
+    <button onclick="pickModel('Gemini 3.6')">Gemini 3.6</button>
+    <button onclick="pickModel('دستیار عمومی')">دستیار عمومی</button>
+    <button onclick="pickModel('پشتیبانی فنی')">پشتیبانی فنی</button>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

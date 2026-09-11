@@ -86,6 +86,7 @@ function closeAllOverlays() {
     closeAssistMenu();
     closeThemeMenu();
     closePricing();
+    closeAuth();
     document.getElementById('model-menu')?.classList.add('hidden');
 }
 
@@ -95,6 +96,7 @@ function openPanel() {
     closeAssistMenu();
     closeThemeMenu();
     closePricing();
+    closeAuth();
     document.getElementById('side-panel').classList.add('open');
     updateSideWidth();
 }
@@ -114,6 +116,7 @@ function toggleAvatarMenu() {
         closeAssistMenu();
         closeThemeMenu();
         closePricing();
+        closeAuth();
         menu.classList.add('open');
         document.getElementById('avatar-backdrop').classList.remove('hidden');
     }
@@ -133,6 +136,7 @@ function toggleAssistMenu() {
         closeAvatarMenu();
         closeThemeMenu();
         closePricing();
+        closeAuth();
         menu.classList.remove('hidden');
         requestAnimationFrame(() => menu.classList.add('open'));
     }
@@ -154,6 +158,7 @@ function toggleThemeMenu() {
         closeAvatarMenu();
         closeAssistMenu();
         closePricing();
+        closeAuth();
         menu.classList.remove('hidden');
         const saved = localStorage.getItem('asha-theme') || 'orange';
         document.querySelectorAll('.swatch').forEach(sw => sw.classList.remove('active'));
@@ -175,6 +180,7 @@ function openPricing() {
     closeAvatarMenu();
     closeAssistMenu();
     closeThemeMenu();
+    closeAuth();
     const bd = document.getElementById('pricing-backdrop');
     bd.classList.remove('hidden');
     requestAnimationFrame(() => bd.classList.add('open'));
@@ -182,6 +188,25 @@ function openPricing() {
 
 function closePricing() {
     const bd = document.getElementById('pricing-backdrop');
+    if (!bd) return;
+    bd.classList.remove('open');
+    setTimeout(() => bd.classList.add('hidden'), 300);
+}
+
+/* ══ مودال ورود/ثبت‌نام ══ */
+function openAuth() {
+    closePanel();
+    closeAvatarMenu();
+    closeAssistMenu();
+    closeThemeMenu();
+    closePricing();
+    const bd = document.getElementById('auth-backdrop');
+    bd.classList.remove('hidden');
+    requestAnimationFrame(() => bd.classList.add('open'));
+}
+
+function closeAuth() {
+    const bd = document.getElementById('auth-backdrop');
     if (!bd) return;
     bd.classList.remove('open');
     setTimeout(() => bd.classList.add('hidden'), 300);
@@ -254,6 +279,14 @@ function autoGrow(el) {
     el.style.height = Math.min(el.scrollHeight, 140) + 'px';
 }
 
+/* ══ اسکرول هوشمند: پیام کاربر می‌ره بالای ناحیه‌ی دید ══ */
+function scrollMsgToTop(el) {
+    if (!el) return;
+    requestAnimationFrame(() => {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+}
+
 async function sendMessage() {
     if (loading) return;
     const input = document.getElementById('user-input');
@@ -263,9 +296,10 @@ async function sendMessage() {
     showChatUI();
     input.value = '';
     autoGrow(input);
-    addMsg(text, 'user');
+    const userDiv = addMsg(text, 'user');
     history.push({ role: 'user', content: text });
     setLoading(true);
+    scrollMsgToTop(userDiv);
     showTyping();
 
     const coldStartTimer = setTimeout(() => {
@@ -289,7 +323,6 @@ async function sendMessage() {
             fullText += data.content;
             if (streamBot) {
                 streamBot.textContent = fullText;
-                scrollBottom();
             }
         }
         if (data.done) saveHistory();
@@ -347,12 +380,11 @@ function addMsg(text, type) {
     div.className = `msg ${type}`;
     div.textContent = text;
     box.appendChild(div);
-    scrollBottom();
     return div;
 }
 
 function scrollBottom() {
-    const box = document.getElementById('messages');
+    const box = document.getElementById('workspace');
     box.scrollTop = box.scrollHeight;
 }
 
@@ -363,7 +395,6 @@ function showTyping() {
     div.className = 'typing-wrap';
     div.innerHTML = `<div class="dots"><span></span><span></span><span></span></div><div id="cold-hint" class="cold-hint">در حال آماده‌سازی پاسخ...</div>`;
     box.appendChild(div);
-    scrollBottom();
 }
 
 function removeTyping() {
@@ -415,5 +446,10 @@ document.addEventListener('click', (e) => {
     const pricingBd = document.getElementById('pricing-backdrop');
     if (pricingBd && e.target.id === 'pricing-backdrop') {
         closePricing();
+    }
+
+    const authBd = document.getElementById('auth-backdrop');
+    if (authBd && e.target.id === 'auth-backdrop') {
+        closeAuth();
     }
 });

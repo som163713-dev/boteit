@@ -85,6 +85,7 @@ function closeAllOverlays() {
     closeAvatarMenu();
     closeAssistMenu();
     closeThemeMenu();
+    closePricing();
     document.getElementById('model-menu')?.classList.add('hidden');
 }
 
@@ -93,6 +94,7 @@ function openPanel() {
     closeAvatarMenu();
     closeAssistMenu();
     closeThemeMenu();
+    closePricing();
     document.getElementById('side-panel').classList.add('open');
     updateSideWidth();
 }
@@ -111,6 +113,7 @@ function toggleAvatarMenu() {
         closePanel();
         closeAssistMenu();
         closeThemeMenu();
+        closePricing();
         menu.classList.add('open');
         document.getElementById('avatar-backdrop').classList.remove('hidden');
     }
@@ -129,6 +132,7 @@ function toggleAssistMenu() {
     } else {
         closeAvatarMenu();
         closeThemeMenu();
+        closePricing();
         menu.classList.remove('hidden');
         requestAnimationFrame(() => menu.classList.add('open'));
     }
@@ -149,6 +153,7 @@ function toggleThemeMenu() {
     } else {
         closeAvatarMenu();
         closeAssistMenu();
+        closePricing();
         menu.classList.remove('hidden');
         const saved = localStorage.getItem('asha-theme') || 'orange';
         document.querySelectorAll('.swatch').forEach(sw => sw.classList.remove('active'));
@@ -162,6 +167,24 @@ function closeThemeMenu() {
     if (!menu) return;
     menu.classList.remove('open');
     setTimeout(() => menu.classList.add('hidden'), 250);
+}
+
+/* ══ مودال خرید اعتبار ══ */
+function openPricing() {
+    closePanel();
+    closeAvatarMenu();
+    closeAssistMenu();
+    closeThemeMenu();
+    const bd = document.getElementById('pricing-backdrop');
+    bd.classList.remove('hidden');
+    requestAnimationFrame(() => bd.classList.add('open'));
+}
+
+function closePricing() {
+    const bd = document.getElementById('pricing-backdrop');
+    if (!bd) return;
+    bd.classList.remove('open');
+    setTimeout(() => bd.classList.add('hidden'), 300);
 }
 
 function toggleRail() {
@@ -387,5 +410,10 @@ document.addEventListener('click', (e) => {
     if (thMenu && thMenu.classList.contains('open') &&
         !thMenu.contains(e.target) && !e.target.closest('.rail-ico') && !e.target.closest('.side-item')) {
         closeThemeMenu();
+    }
+
+    const pricingBd = document.getElementById('pricing-backdrop');
+    if (pricingBd && e.target.id === 'pricing-backdrop') {
+        closePricing();
     }
 });

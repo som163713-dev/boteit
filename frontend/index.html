@@ -188,7 +188,7 @@
             <button class="side-item" onclick="toast('ابزارها')"><span class="si">🧰</span>ابزارها</button>
             <button class="side-item" onclick="toast('صداگذاری')"><span class="si">🎙️</span>صداگذاری و دوبله<span class="badge">جدید</span></button>
 
-            <button class="buy-plan-btn" onclick="toast('صفحه خرید اعتبار — به‌زودی')">
+            <button class="buy-plan-btn" onclick="openPricing()">
                 <span class="bp-ico">⚡</span> خرید اعتبار
             </button>
 
@@ -240,7 +240,7 @@
         </div>
 
         <div class="am-footer">
-            <button class="buy-plan-btn" onclick="toast('صفحه خرید اعتبار — به‌زودی')">
+            <button class="buy-plan-btn" onclick="openPricing()">
                 <span class="bp-ico">⚡</span> خرید اعتبار
             </button>
             <button class="side-item" onclick="toast('تنظیمات حساب')"><span class="si">⚙️</span>تنظیمات حساب</button>
@@ -277,6 +277,124 @@
         <button class="swatch sw-green" onclick="setTheme('green')" title="سبز"></button>
         <button class="swatch sw-blue" onclick="setTheme('blue')" title="آبی"></button>
         <button class="swatch sw-pink" onclick="setTheme('pink')" title="صورتی"></button>
+    </div>
+</div>
+
+<!-- ══ مودال سینمایی خرید اعتبار ══ -->
+<div class="pricing-backdrop hidden" id="pricing-backdrop">
+    <div class="pricing-modal" id="pricing-modal">
+        <div class="pricing-glow g1"></div>
+        <div class="pricing-glow g2"></div>
+        <div class="pricing-glow g3"></div>
+
+        <button class="pricing-close" onclick="closePricing()">×</button>
+
+        <div class="pricing-head">
+            <div class="ph-logo">
+                <div class="logo-mark"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" fill="currentColor"/><path d="M12 7.5l-4 2.5v5l4 2.5 4-2.5v-5l-4-2.5z" fill="#fff" opacity=".9"/></svg></div>
+                <span>آشا</span>
+            </div>
+            <h2>ارتقا بده، بی‌محدودیت بساز</h2>
+            <p>یک پلن انتخاب کن و به تمام مدل‌های تصویر، ویدیو و موزیک آشا دسترسی کامل داشته باش</p>
+        </div>
+
+        <div class="pricing-grid">
+
+            <div class="price-card">
+                <div class="pc-badge-install">پرداخت در ۴ قسط</div>
+                <div class="pc-name">پایه</div>
+                <div class="pc-credit"><span class="pc-bolt">⚡</span>۴۰۰</div>
+                <a class="pc-link" onclick="toast('مشاهده مدل‌ها')">دسترسی به همه مدل‌ها</a>
+                <div class="pc-features">
+                    <span>🖼️ ۸۰~ عکس</span>
+                    <span>🎬 ۲۶~ ویدیو</span>
+                    <span>🎵 ۲۶~ موزیک</span>
+                </div>
+                <div class="pc-divider"></div>
+                <div class="pc-price-row">
+                    <div class="pc-price">۸۹۰,۰۰۰ <small>تومان</small></div>
+                </div>
+                <div class="pc-per">
+                    <span>هر اعتبار</span>
+                    <b>۲,۲۲۵ تومان</b>
+                </div>
+                <button class="pc-buy" onclick="toast('پرداخت — به‌زودی')">خرید اعتبار</button>
+            </div>
+
+            <div class="price-card popular">
+                <div class="pc-ribbon">پرطرفدارترین</div>
+                <div class="pc-badge-discount">۸٪ تخفیف</div>
+                <div class="pc-badge-install">پرداخت در ۴ قسط</div>
+                <div class="pc-name">پلاس</div>
+                <div class="pc-credit"><span class="pc-bolt">⚡</span>۸۶۵</div>
+                <div class="pc-gift">۸۰۰ + ۶۵ هدیه</div>
+                <a class="pc-link" onclick="toast('مشاهده مدل‌ها')">دسترسی به همه مدل‌ها</a>
+                <div class="pc-features">
+                    <span>🖼️ ۱۷۳~ عکس</span>
+                    <span>🎬 ۱۴۴~ ویدیو</span>
+                    <span>🎵 ۵۷~ موزیک</span>
+                </div>
+                <div class="pc-divider"></div>
+                <div class="pc-price-row">
+                    <div class="pc-old">۱,۹۳۴,۷۸۳ تومان</div>
+                    <div class="pc-price">۱,۷۸۰,۰۰۰ <small>تومان</small></div>
+                </div>
+                <div class="pc-per">
+                    <span>هر اعتبار: ۲,۰۵۸ تومان</span>
+                    <b class="save">۱۵۴,۷۸۳ تومان صرفه‌جویی</b>
+                </div>
+                <button class="pc-buy" onclick="toast('پرداخت — به‌زودی')">خرید اعتبار</button>
+            </div>
+
+            <div class="price-card">
+                <div class="pc-badge-discount">۱۷٪ تخفیف</div>
+                <div class="pc-badge-install">پرداخت در ۴ قسط</div>
+                <div class="pc-name">حرفه‌ای</div>
+                <div class="pc-credit"><span class="pc-bolt">⚡</span>۱۹۲۰</div>
+                <a class="pc-link" onclick="toast('مشاهده مدل‌ها')">دسترسی به همه مدل‌ها</a>
+                <div class="pc-features">
+                    <span>🖼️ ۳۸۴~ عکس</span>
+                    <span>🎬 ۳۲۰~ ویدیو</span>
+                    <span>🎵 ۱۲۸~ موزیک</span>
+                </div>
+                <div class="pc-divider"></div>
+                <div class="pc-price-row">
+                    <div class="pc-old">۴,۶۲۰,۰۰۰ تومان</div>
+                    <div class="pc-price">۳,۸۳۵,۰۰۰ <small>تومان</small></div>
+                </div>
+                <div class="pc-per">
+                    <span>هر اعتبار: ۱,۹۹۷ تومان</span>
+                    <b class="save">۷۸۵,۰۰۰ تومان صرفه‌جویی</b>
+                </div>
+                <button class="pc-buy" onclick="toast('پرداخت — به‌زودی')">خرید اعتبار</button>
+            </div>
+
+            <div class="price-card ultra">
+                <div class="pc-badge-discount">۲۰٪ تخفیف</div>
+                <div class="pc-badge-install">پرداخت در ۴ قسط</div>
+                <div class="pc-name">نامحدود</div>
+                <div class="pc-credit"><span class="pc-bolt">⚡</span>۴۰۰۰</div>
+                <a class="pc-link" onclick="toast('مشاهده مدل‌ها')">دسترسی به همه مدل‌ها</a>
+                <div class="pc-features">
+                    <span>🖼️ ۸۰۰~ عکس</span>
+                    <span>🎬 ۶۶۶~ ویدیو</span>
+                    <span>🎵 ۲۶۶~ موزیک</span>
+                </div>
+                <div class="pc-divider"></div>
+                <div class="pc-price-row">
+                    <div class="pc-old">۹,۶۰۰,۰۰۰ تومان</div>
+                    <div class="pc-price">۷,۶۸۰,۰۰۰ <small>تومان</small></div>
+                </div>
+                <div class="pc-per">
+                    <span>هر اعتبار: ۱,۹۲۰ تومان</span>
+                    <b class="save">۱,۹۲۰,۰۰۰ تومان صرفه‌جویی</b>
+                </div>
+                <button class="pc-buy" onclick="toast('پرداخت — به‌زودی')">خرید اعتبار</button>
+            </div>
+
+        </div>
+
+        <div class="pricing-foot">پرداخت امن • قابل استفاده در تمام سرویس‌های آشا • بدون انقضا</div>
     </div>
 </div>
 

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>کارخانه‌ی ایجنت</title>
+<link rel="stylesheet" href="/customer-assets/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- صفحه‌ی ورود -->
+<div id="screen-login" class="screen">
+    <div class="login-card">
+        <div class="brand">
+            <span class="brand-mark">◆</span>
+            <span class="brand-name">کارخانه‌ی ایجنت</span>
+        </div>
+        <p class="lead">با کد دسترسی که از پشتیبانی گرفتی وارد شو.</p>
+        <input id="login-key" type="text" placeholder="کد دسترسی (API Key)" autocomplete="off">
+        <button id="login-btn" onclick="doLogin()">ورود</button>
+        <p id="login-error" class="error-text"></p>
+    </div>
+</div>
+
+<!-- داشبورد -->
+<div id="screen-dashboard" class="screen hidden">
+    <header class="topbar">
+        <div class="topbar-left">
+            <span class="brand-mark">◆</span>
+            <span class="brand-name">کارخانه‌ی ایجنت</span>
+        </div>
+        <div class="topbar-right">
+            <div class="biz-info">
+                <span id="biz-name"></span>
+                <span id="biz-plan" class="plan-pill"></span>
+            </div>
+            <button class="logout-btn" onclick="doLogout()">خروج</button>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="intro">
+            <h1>ابزارهای در دسترست</h1>
+            <p>روی هرکدوم بزن تا همون‌جا بسازیش. ابزارهایی که قفل‌ان، جزو پلن فعلیت نیستن.</p>
+        </section>
+
+        <section id="agent-grid" class="agent-grid"></section>
+
+        <section id="tool-panel" class="tool-panel hidden"></section>
+
+        <section class="history-section">
+            <div class="history-head">
+                <h2>خروجی‌های قبلی</h2>
+                <button class="ghost-btn" onclick="loadHistory()">بروزرسانی</button>
+            </div>
+            <div id="history-list" class="history-list"></div>
+        </section>
+    </main>
+</div>
+
+<script src="/customer-assets/app.js"></script>
+</body>
+</html>

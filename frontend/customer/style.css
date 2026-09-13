@@ -1,0 +1,236 @@
+:root {
+    --bg:        #14171F;
+    --surface:   #1C2029;
+    --surface-2: #232834;
+    --border:    #2C3140;
+    --amber:     #F2A93B;
+    --amber-dim: #8A6A2C;
+    --text:      #F2F1ED;
+    --text-dim:  #9AA0AC;
+    --locked:    #4A4F5C;
+    --success:   #4FBE7A;
+    --error:     #E5615A;
+    --radius:    14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Vazirmatn', Tahoma, sans-serif;
+    min-height: 100vh;
+}
+
+.hidden { display: none !important; }
+
+/* ── برند ── */
+.brand { display: flex; align-items: center; gap: 8px; }
+.brand-mark {
+    color: var(--amber);
+    font-size: 20px;
+}
+.brand-name { font-weight: 800; font-size: 16px; letter-spacing: -0.01em; }
+
+/* ── صفحه‌ی ورود ── */
+.screen { min-height: 100vh; }
+#screen-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+.login-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+}
+.login-card .brand { justify-content: center; margin-bottom: 18px; }
+.login-card .brand-mark { font-size: 28px; }
+.login-card .brand-name { font-size: 20px; }
+.lead {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin: 0 0 24px;
+    line-height: 1.8;
+}
+#login-key {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 13px 14px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 14px;
+}
+#login-key:focus { outline: none; border-color: var(--amber); }
+#login-btn {
+    width: 100%;
+    background: var(--amber);
+    color: #1a1408;
+    border: none;
+    border-radius: 10px;
+    padding: 13px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+}
+#login-btn:hover { background: #ffc266; }
+.error-text { color: var(--error); font-size: 13px; margin-top: 12px; min-height: 18px; }
+
+/* ── نوار بالا ── */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 28px;
+    border-bottom: 1px solid var(--border);
+}
+.topbar-right { display: flex; align-items: center; gap: 14px; }
+.biz-info { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+.plan-pill {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--amber);
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 999px;
+}
+.logout-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+.logout-btn:hover { color: var(--text); border-color: var(--text-dim); }
+
+/* ── محتوای اصلی ── */
+.main { max-width: 880px; margin: 0 auto; padding: 36px 24px 60px; }
+.intro h1 { font-size: 26px; font-weight: 800; margin: 0 0 6px; }
+.intro p { color: var(--text-dim); font-size: 14px; margin: 0 0 28px; }
+
+/* ── کارت ایجنت‌ها ── */
+.agent-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+}
+.agent-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+.agent-card:hover { border-color: var(--amber-dim); }
+.agent-card.locked { cursor: not-allowed; opacity: 0.55; }
+.agent-card.active-open { border-color: var(--amber); }
+.agent-card .agent-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+.agent-card h3 { font-size: 15px; margin: 0; font-weight: 700; }
+.agent-card p { font-size: 13px; color: var(--text-dim); margin: 0; line-height: 1.7; }
+.status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--success); flex-shrink: 0; margin-top: 5px;
+}
+.status-dot.off { background: var(--locked); }
+.lock-note { font-size: 12px; color: var(--locked); margin-top: 10px; }
+
+/* ── پنل ابزار ── */
+.tool-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 32px;
+}
+.tool-panel h2 { font-size: 16px; margin: 0 0 16px; }
+.tool-panel input, .tool-panel textarea {
+    width: 100%;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+.tool-panel .run-btn {
+    background: var(--amber);
+    color: #1a1408;
+    border: none;
+    border-radius: 10px;
+    padding: 11px 22px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+}
+.tool-panel .run-btn:disabled { opacity: 0.6; cursor: wait; }
+.tool-output {
+    margin-top: 18px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    white-space: pre-wrap;
+    line-height: 1.9;
+    font-size: 14px;
+}
+.kpi-strip { color: var(--text-dim); font-size: 13px; margin-bottom: 8px; }
+
+/* ── تاریخچه ── */
+.history-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.history-head h2 { font-size: 16px; margin: 0; }
+.ghost-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+.history-list { display: flex; flex-direction: column; gap: 10px; }
+.history-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+.history-item .h-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+}
+.history-item .h-kind { color: var(--amber); font-weight: 700; }
+.history-item .h-body { font-size: 13px; line-height: 1.8; }
+.empty-note { color: var(--text-dim); font-size: 13px; padding: 20px 0; text-align: center; }
+
+@media (max-width: 560px) {
+    .topbar { padding: 14px 16px; }
+    .main { padding: 24px 16px 40px; }
+    .agent-grid { grid-template-columns: 1fr; }
+}
